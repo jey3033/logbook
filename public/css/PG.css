@@ -1,0 +1,53 @@
+.bg-pg {
+    background-color: #ffc619;
+}
+
+.log-badge {
+    margin-top: -20px;
+    top: 45px;
+}
+
+/* Width Manipulation */
+.w-94 {
+    width: 94% !important;
+}
+
+.col-w-4 {
+    width: 30% !important;
+}
+
+/* Image Manipulation */
+.prev-image {
+    max-width: 300px;
+}
+
+.square-300 {
+    width: 300px;
+    height: 300px;
+}
+
+.round-prof {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.prof-photo {
+    border-radius: 50%;
+}
+
+.small-icon {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+}
+
+/* Text Manipulation */
+.text-color-black {
+    color: black;
+}
+
+/* Select2 Manipulation */
+.select2-container--default .select2-selection--single {
+    height: 37.6px;
+}
