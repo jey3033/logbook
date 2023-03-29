@@ -24,14 +24,29 @@ class LogController extends Controller
     {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         $log = Log::where("user_id", Auth::user()->id)->get();
-        $log = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->where("logs.user_id", Auth::user()->id)->orWhere("users.supervisor",Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at');
+        $log = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at');
+        $nameFiltered = false;
         if (isset($_REQUEST['filter'])) {
             foreach ($_REQUEST['filter'] as $key => $value) {
+                if ($value['name'] == 'users.id' && $value['value'] != null) {
+                    $filterValue = $value['value'];
+                    $log = $log->where($value['name'],$filterValue);
+                }
+
+                if ($value['name'] == 'tgl-update-min' && $value['value'] != null) {
+                    $filterValue = $value['value'];
+                    $log = $log->where("logs.updated_at",'>',$filterValue.' 00:00:00');
+                }else if ($value['name'] == 'tgl-update-max' && $value['value'] != null) {
+                    $filterValue = $value['value'];
+                    $log = $log->where("logs.updated_at",'<=',$filterValue.' 23:59:59');
+                }else 
                 if($value['value'] != null) {
                     $filterValue = $value['value'];
                     $log = $log->where($value['name'],'like',"%{$filterValue}%");
                 }
             }
+        }else {
+            $log = $log->where("logs.user_id", Auth::user()->id)->orWhere("users.supervisor",Auth::user()->id);
         }
         $log = $log->get();
         foreach ($log as $key => $value) {
