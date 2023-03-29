@@ -25,6 +25,7 @@ class User extends Authenticatable
         'activated',
         'supervisor',
         'profile_path',
+        'secret',
     ];
 
     /**

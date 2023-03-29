@@ -44,6 +44,7 @@ Route::controller(UserController::class)->group(function() {
     Route::post('/setsupervisor', 'set_supervisor');
     Route::get('/user/checkpassword', 'check_password');
     Route::post('/user/setphoto', 'uploadImage');
+    Route::post('/user/verifyOTP', 'otp_verification');
 
     Route::post('/bypasschange', 'change_pass_bypass');
 });

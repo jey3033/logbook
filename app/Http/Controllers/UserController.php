@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use OTPHP\TOTP;
 
 class UserController extends BaseController
 {
@@ -22,6 +23,16 @@ class UserController extends BaseController
         
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $result['message'] = 'Succesfull Login';
+            $OTP = TOTP::create();
+            if (!Auth::user()->secret) {
+                $user = User::where('uuid', Auth::user()->uuid)->first();
+                $user->secret = $OTP->getSecret();
+                $user->save();
+            }
+            $OTP = TOTP::create(Auth::user()->secret);
+            $OTP->setLabel("Laravel Logbook({$email})");
+            $grCodeUri = $OTP->getQrCodeUri('https://api.qrserver.com/v1/create-qr-code/?data=[DATA]&size=300x300&ecc=M','[DATA]');
+            $result['uri'] = $grCodeUri;    
             return response(json_encode($result),200);
         }
         $result['message'] = 'False Credential';
@@ -192,5 +203,15 @@ class UserController extends BaseController
         $user->save();
 
         return back();
+    }
+
+    public function otp_verification() {
+        $dataUser = User::where('uuid', Auth::user()->uuid)->first();
+        $OTP = TOTP::create($dataUser->secret);
+        if ($OTP->verify($_POST['verification'])) {
+            return 200;
+        } else {
+            return 400;
+        }
     }
 }
