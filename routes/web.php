@@ -43,7 +43,7 @@ Route::controller(UserController::class)->group(function() {
     Route::get('/user/{id}/actuser', 'activate_user');
     Route::post('/setsupervisor', 'set_supervisor');
     Route::get('/user/checkpassword', 'check_password');
-    Route::post('/user/setphoto', 'uploadImage');
+    Route::post('/user/setphoto', 'edit_profile');
     Route::post('/user/verifyOTP', 'otp_verification');
 
     Route::post('/bypasschange', 'change_pass_bypass');
@@ -52,7 +52,7 @@ Route::controller(UserController::class)->group(function() {
 Route::controller(LogController::class)->group(function () {
     Route::get('/log', 'index');
     Route::post('/log/store', 'store');
-    Route::get('/log/{id}', 'view');
+    Route::get('/log/{id}', 'view')->name("viewlog");
     Route::post('/log/response/{id}', 'response');
     Route::post('/log/update/{id}', 'amend');
 

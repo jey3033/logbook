@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Log;
 use App\Http\Requests\StoreLogRequest;
 use App\Http\Requests\UpdateLogRequest;
+use App\Mail\NotifMail;
+use App\Mail\StatusMail;
 use App\Models\User;
 use ETC_Class\Custom_Filter\Custom_Filter as Custom_Filter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 use function PHPUnit\Framework\isEmpty;
@@ -69,9 +72,11 @@ class LogController extends Controller
             $new_log->title = $title;
             $new_log->log = $log;
             $new_log->user_id = Auth::user()->id;
-            $new_log->save();
-
             $new_log->uuid = md5($new_log->id.$log);
+
+            if(Auth::user()->supervisor) {
+                Mail::to(User::where('id', Auth::user()->supervisor)->first()->email)->send(new NotifMail($new_log));
+            }
             $new_log->save();
 
             return response(json_encode(["Message" => "log {$log} is created", "ID" => $new_log->id]));
@@ -84,7 +89,7 @@ class LogController extends Controller
         $uuid = $id;
         try {
             $log = Log::where("uuid", $uuid)->first();
-            return response(json_encode($log));
+            return view('log-view', ['log' => $log]);
         } catch (\Throwable $th) {
             return response(json_encode($th->getMessage()), 500);
         }
@@ -119,6 +124,9 @@ class LogController extends Controller
             if ($author->id == Auth::user()->id) return response(json_encode(["Message" => 'You\'re not authorized to approved your own log']), 403);
             elseif ($author->supervisor_id == Auth::user()->id)  return response(json_encode(["Message" => 'You\'re not this user\'s supervisor']), 401);
             $log->status = $status;
+            
+            Mail::to($author->email)->send(new StatusMail($log));
+
             $log->save();
 
             return response(json_encode(["Message" => "Log Responsed"]));

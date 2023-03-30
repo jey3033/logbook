@@ -186,15 +186,16 @@ class UserController extends BaseController
     
     public function edit_profile(Request $request) {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-    
-        $imageName = time().'.'.$request->image->extension();  
-     
-        $request->image->move(public_path('images'), $imageName);
 
         $user = User::where("uuid", $_POST['uuid'])->first();
-        $user->profile_path = "/images/{$imageName}";
+    
+        if ($request->image) {
+            $imageName = time().'.'.$request->image->extension();  
+            $request->image->move(public_path('images'), $imageName);
+            $user->profile_path = "/images/{$imageName}";
+        }
         $user->name = $_POST['name'];
         $user->email = $_POST['email'];
         if ($_POST['supervisor']) {

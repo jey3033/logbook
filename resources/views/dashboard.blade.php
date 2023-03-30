@@ -108,7 +108,7 @@
                                         <p class="card-text text-start">${value['log']}</p>
                                     </div>
                                     <div class="card-footer">
-                                        <a class="btn btn-primary me-1" href="/log/view/${value['uuid']}" role="button">View</a>
+                                        <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button">View</a>
                                         ${accbtn}
                                         ${rejbtn}
                                     </div>
