@@ -20,10 +20,10 @@
           <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
-                <a class="nav-link active" id="profile-btn" aria-current="true" href="#">Profile</a>
+                <a class="nav-link active" id="profile-tab-btn">Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="password-btn" href="#">Password</a>
+                <a class="nav-link" id="password-tab-btn">Password</a>
               </li>
             </ul>
           </div>
@@ -34,8 +34,8 @@
                 <div class="d-inline">
                     <label for="Image" class="form-label d-block">Profile</label>
                     <img src="{{ $user_data['profile_path'] }}" alt="Profile Photo" class="img-fluid mb-3 prof-photo square-300">
-                    <input class="form-control w-94 mb-3 d-inline" name="image" type="file" id="image" onchange="preview()">
-                    <button role="button" onclick="clearImage()" class="btn btn-primary" style="margin-top: -5px;">Delete</button>
+                    <input class="form-control w-93 mb-3 d-inline" name="image" type="file" id="image" onchange="preview()">
+                    <button role="button" onclick="clearImage()" class="btn btn-danger" style="margin-top: -5px;"><i class="fa-solid fa-trash-can"></i> Delete</button>
                 </div>
                 <img id="frame" src="" class="img-fluid mt-3 prev-image" />
                 <div class="mb-3">
@@ -61,7 +61,7 @@
                   </select>
                 </div>
                 <input type="hidden" name="uuid" value="{!! $user_data['uuid'] !!}">
-                <button type="submit" class="btn btn-primary" id="update-data">Submit</button>
+                <button type="submit" class="btn btn-primary" id="update-data"><i class="fa-solid fa-user-pen"></i> Submit</button>
             </form>
           </div>
 
@@ -85,7 +85,7 @@
                     class="form-control" name="confPass" id="profile-conf-password" placeholder="Re-enter Your New Password">
                 </div>
 
-                <button type="button" class="btn btn-primary">Save Changes</button>
+                <button type="button" id="profile-password-change" class="btn btn-primary"><i class="fa-solid fa-lock"></i> Save Changes</button>
             </form>
           </div>
         </div>
@@ -108,21 +108,21 @@
             });
 
             $('#password-tab').hide()
-            $('#profile-btn').click(function (e) { 
+            $('#profile-tab-btn').click(function (e) { 
                 e.preventDefault();
                 
-                if (!$('#profile-btn').hasClass('active')) { $('#profile-btn').addClass('active') }
-                if ($('#password-btn').hasClass('active')) { $('#password-btn').removeClass('active') }
+                if ($('#profile-tab-btn').hasClass('active') == false) { $('#profile-tab-btn').addClass('active') }
+                if ($('#password-tab-btn').hasClass('active') == true) { $('#password-tab-btn').removeClass('active') }
 
                 $('#profile-tab').show()
                 $('#password-tab').hide()
             })
 
-            $('#password-btn').click(function (e) { 
+            $('#password-tab-btn').click(function (e) { 
                 e.preventDefault();
                 
-                if ($('#profile-btn').hasClass('active')) { $('#profile-btn').removeClass('active') }
-                if (!$('#password-btn').hasClass('active')) { $('#password-btn').addClass('active') }
+                if ($('#profile-tab-btn').hasClass('active') == true) { $('#profile-tab-btn').removeClass('active') }
+                if ($('#password-tab-btn').hasClass('active') == false) { $('#password-tab-btn').addClass('active') }
 
                 $('#profile-tab').hide()
                 $('#password-tab').show()
@@ -140,12 +140,16 @@
                         if (message.includes("mismatch")) {
                             $('#profile-old-password').removeClass('is-valid');
                             $('#profile-old-password').addClass('is-invalid');
+                            $('#profile-old-password').tooltip({ 'trigger': 'focus', 'title': 'password is not match', 'placement': 'bottom'});
                         }else if(message.includes("match")){
                             $('#profile-old-password').addClass('is-valid');
                             $('#profile-old-password').removeClass('is-invalid');
+                            $('#profile-old-password').tooltip('disable');
                         }
                     }
                 });
+
+                check_pass();
             });
 
             $('#profile-new-password').keyup(function (e) { 
@@ -176,12 +180,16 @@
                 if(score < 0) {
                     $(this).removeClass("is-valid");
                     $(this).addClass("is-invalid");
+                    $(this).tooltip({ 'trigger': 'focus', 'title': 'password baru tidak memenuhi kriteria', 'placement': 'top'});
                 }
                 if(score > 0) {
                     $(this).addClass("is-valid");
                     $(this).removeClass("is-invalid");
+                    $(this).tooltip('disable');
                 }
                 console.log(score);
+
+                check_pass();
             });
 
             $('#profile-conf-password').keyup(function (e) { 
@@ -190,11 +198,38 @@
                 if (confPass == newPass) {
                     $(this).removeClass('is-invalid');
                     $(this).addClass('is-valid');
+                    $(this).tooltip('disable');
                 } else if (confPass != newPass) {
                     $(this).removeClass('is-valid');
                     $(this).addClass('is-invalid');
+                    $(this).tooltip({ 'trigger': 'focus', 'title': 'password baru tidak sesuai', 'placement': 'bottom'});
                 }
+
+                check_pass();
             });
+
+            $('#profile-password-change').hover(function (e) {
+                check_pass();
+            })
+
+            function check_pass() {
+                let found = false;
+                $.each($('input[type=password]'), function (index, value) {
+                    console.log(value.classList.contains('is-valid'));
+                    if(!value.value) {
+                        value.classList.add('is-invalid');
+                        found = true;
+                    } 
+                    if(value.classList.contains('is-invalid')) {
+                        found = true
+                    }
+                });
+                if (found) {
+                    $('#profile-password-change').fadeOut();
+                }else{
+                    $('#profile-password-change').fadeIn();
+                }
+            }
         });
     </script>
 </body>
