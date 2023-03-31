@@ -75,8 +75,8 @@
                     var accbtn = ""
                     var rejbtn = ""
                     if (value['name'] != `{!! $username !!}`) {
-                        accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=1>Accept</button>`
-                        rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2>Reject</button>`
+                        accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=1><i class="fa-solid fa-file-circle-check"></i> Accept</button>`
+                        rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2><i class="fa-solid fa-file-circle-xmark"></i> Reject</button>`
                     }
 
                     // generate badge
@@ -108,7 +108,7 @@
                                         <p class="card-text text-start">${value['log']}</p>
                                     </div>
                                     <div class="card-footer">
-                                        <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button">View</a>
+                                        <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>
                                         ${accbtn}
                                         ${rejbtn}
                                     </div>

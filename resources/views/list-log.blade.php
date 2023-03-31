@@ -66,7 +66,7 @@
                         </div>
                     </div>
                   <div class="row justify-content-center align-items-center g-2">
-                      <button type="button" id="filter-submit" class="btn btn-primary">Submit</button>
+                      <button type="button" id="filter-submit" class="btn btn-primary"><i class="fa-solid fa-filter"></i> Submit</button>
                   </div>
               </form>
             </div>
@@ -78,7 +78,7 @@
         <!-- Button trigger modal -->
         <div class="mb-2">
             <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#NewLog">
-                Create New
+                <i class="fa-solid fa-file-circle-plus"></i> Create New
             </button>
         </div>
         
@@ -106,8 +106,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" id="NewLog-Save" class="btn btn-primary">Save</button>
+                        <button type="button" id="NewLog-Save" class="btn btn-primary"><i class="fa-solid fa-file-pen"></i> Save</button>
                     </div>
                 </div>
             </div>
@@ -155,11 +154,14 @@
                                 }
 
                                 //generate accept button
-                                var accbtn = ""
-                                var rejbtn = ""
+                                var accbtn = "";
+                                var rejbtn = "";
+                                var delbtn = "";
                                 if (value['name'] != `{!! $username !!}`) {
-                                    accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=1>Accept</button>`
-                                    rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2>Reject</button>`
+                                    accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=1><i class="fa-solid fa-file-circle-check"></i> Accept</button>`
+                                    rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2><i class="fa-solid fa-file-circle-xmark"></i> Reject</button>`
+                                }else if(value['status'] == 0){
+                                    delbtn = `<a href="/log/${value['uuid']}/delete" type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Delete</a>`
                                 }
 
                                 // generate badge
@@ -191,9 +193,9 @@
                                                     <p class="card-text">${value['log']}</p>
                                                 </div>
                                                 <div class="card-footer">
-                                                    <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button">View</a>
+                                                    <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>
                                                     ${accbtn}
-                                                    ${rejbtn}
+                                                    ${rejbtn} ${delbtn}
                                                 </div>
                                             </div>`;
                                 $(`#row-${rowid}`).append(html)
