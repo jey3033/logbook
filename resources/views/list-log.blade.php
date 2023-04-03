@@ -116,6 +116,7 @@
     </div>
 
     <script>
+        const newlog = new bootstrap.Modal(document.getElementById('NewLog'));
         $(document).ready(function () {
             var param;
             loadList();
@@ -213,7 +214,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="container-fluid">
-                                                    <form id="Log-${value['uuid']}-Form">
+                                                    <form id="Log-${value['uuid']}-Form" method="POST">
                                                         @csrf
                                                         <div class="mb-3">
                                                         <label for="Log-${value['uuid']}-Title" class="form-label">Log Title</label>
@@ -237,33 +238,43 @@
                                 $('#log-list').append(modal);
 
                                 $(`#Log-${value['uuid']}-Edit`).click(function() {
-                                    let formnumber = $(this).data('form');
-                                    let ser_data = $(`#Log-${formnumber}-Form`).serializeArray();
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "/log/update/"+formnumber,
-                                        data: ser_data,
-                                        success: function (response) {
-                                            swal.fire({
-                                                icon: 'success',
-                                                title: 'Log Updated'
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    location.reload();
-                                                }
-                                            });
+                                    if($(`#Log-${value['uuid']}-Title`).val() && $(`#Log-${value['uuid']}-log`).val()){
+                                        $(`#Log-${value['uuid']}-Title`).removeClass('is-invalid');
+                                        $(`#Log-${value['uuid']}-log`).removeClass('is-invalid');
+                                        let formnumber = $(this).data('form');
+                                        let ser_data = $(`#Log-${formnumber}-Form`).serializeArray();
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/log/update/"+formnumber,
+                                            data: ser_data,
+                                            success: function (response) {
+                                                swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Log Updated'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        location.reload();
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }else{
+                                        if (!$(`#Log-${value['uuid']}-Title`).val()) {
+                                            $(`#Log-${value['uuid']}-Title`).addClass('is-invalid');
                                         }
-                                    });
-                                })
-
-                                $(document).keydown(function (e) { 
-                                    if (e.which == 13){
-                                        if ($(`#Log-${value['uuid']}-log`).val() && $(`#Log-${value['uuid']}-Title`).val()) {
-                                            e.preventDefault();
-                                            $(`#Log-${value['uuid']}-Edit`).click();
+                                        if (!$(`#Log-${value['uuid']}-log`).val()) {
+                                            $(`#Log-${value['uuid']}-log`).addClass('is-invalid');
                                         }
                                     }
-                                });
+                                })
+
+                                var edit = {};
+                                var uuid = value['uuid'];
+                                edit[uuid] = new bootstrap.Modal(document.getElementById('NewLog'));
+
+                                $(`#Log-${value['uuid']}-Form`).submit(function() {
+                                    $(`#Log-${value['uuid']}-Edit`).click();
+                                })
                             });
                         } 
                     }
