@@ -52,17 +52,11 @@
     height: 37.6px;
 }
 
-/* Margin Manipulation */
-/* .navbar {
-    margin-left: 0px !important;
-} */
-
-/* Card Title Manipulation */
-/* .card-title {
-    float: none !important;
-} */
-
-/* .col-md-3 {
-    flex: unset;
-    max-width: unset;
-} */
+/* Header Manipulation */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: #ffffff;
+    z-index: 2;
+}

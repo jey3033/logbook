@@ -34,7 +34,7 @@
 
 
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-light navbar-white">
+<nav class="main-header navbar navbar-expand navbar-light navbar-white sticky-header">
     <div class="container">
       <a href="/dashboard" class="navbar-brand">
         <i class="fa-solid fa-torii-gate"></i>
