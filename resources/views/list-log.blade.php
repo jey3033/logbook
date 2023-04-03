@@ -255,6 +255,15 @@
                                         }
                                     });
                                 })
+
+                                $(document).keydown(function (e) { 
+                                    if (e.which == 13){
+                                        if ($(`#Log-${value['uuid']}-log`).val() && $(`#Log-${value['uuid']}-Title`).val()) {
+                                            e.preventDefault();
+                                            $(`#Log-${value['uuid']}-Edit`).click();
+                                        }
+                                    }
+                                });
                             });
                         } 
                     }
@@ -262,6 +271,15 @@
             } 
 
             // save new log
+            $(document).keydown(function (e) { 
+                if (e.which == 13){
+                    if ($('#NewLog-log').val() && $('#NewLog-Title').val()) {
+                        e.preventDefault();
+                        $('#NewLog-Save').click();
+                    }
+                }
+            });
+
             $('#NewLog-Save').click(function (e) { 
                 e.preventDefault();
                 $.ajax({
