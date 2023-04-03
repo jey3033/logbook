@@ -74,7 +74,10 @@
         $(document).ready(function () {
             $(document).keyup(function (e) { 
                 if (e.which == 13){
-                    if ($('#email').val() && $('#password').val()) {
+                    if ($('#verification').val()) {
+                        $('#submitVerification').click();
+                    }
+                    if ($('#email').val() && $('#password').val() && !$('#verification').val()) {
                         $('#login-submit').click();
                     }
                 }

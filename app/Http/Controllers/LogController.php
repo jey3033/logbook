@@ -23,8 +23,7 @@ class LogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         $log = Log::where("user_id", Auth::user()->id)->get();
         $log = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at');
@@ -61,8 +60,7 @@ class LogController extends Controller
         return response(json_encode(["Data" => $log]));
     }
 
-    public function store()
-    {
+    public function store() {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         try {
             // var_dump('aa');die();
@@ -99,12 +97,14 @@ class LogController extends Controller
 
     public function amend($id) {
         $uuid = $id;
+        $title = $_REQUEST['title'];
         $text = $_REQUEST['log'];
         try {
             $log = Log::where("uuid", $uuid)->first();
             $author = User::where("id", $log->user_id)->first();
             if ($log->status != 0) return response(json_encode(["Message" => "Log has been Responsed"]), 405);
             if ($author->id != Auth::user()->id) return response(json_encode(["Message" => 'You\'re not authorized to edit this log']), 403);
+            $log->title = $title;
             $log->log = $text;
             $log->save();
 

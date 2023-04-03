@@ -157,11 +157,13 @@
                                 var accbtn = "";
                                 var rejbtn = "";
                                 var delbtn = "";
+                                var edtbtn = "";
                                 if (value['name'] != `{!! $username !!}`) {
                                     accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=1><i class="fa-solid fa-file-circle-check"></i> Accept</button>`
                                     rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2><i class="fa-solid fa-file-circle-xmark"></i> Reject</button>`
                                 }else if(value['status'] == 0){
                                     delbtn = `<a href="/log/${value['uuid']}/delete" type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Delete</a>`
+                                    edtbtn = `<a href="" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#edit-modal-${value['uuid']}"><i class="fa-solid fa-file-pen"></i> Edit</a>`
                                 }
 
                                 // generate badge
@@ -194,11 +196,65 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>
-                                                    ${accbtn}
+                                                    ${edtbtn} ${accbtn}
                                                     ${rejbtn} ${delbtn}
                                                 </div>
                                             </div>`;
                                 $(`#row-${rowid}`).append(html)
+                                
+                                // generate modal
+                                let modal = `
+                                <div class="modal fade" id="edit-modal-${value['uuid']}" tabindex="-1" role="dialog" aria-labelledby="edit-modal-title-${value['uuid']}" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="edit-modal-title-${value['uuid']}">Modal title</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="container-fluid">
+                                                    <form id="Log-${value['uuid']}-Form">
+                                                        @csrf
+                                                        <div class="mb-3">
+                                                        <label for="Log-${value['uuid']}-Title" class="form-label">Log Title</label>
+                                                        <input type="text" name="title" id="Log-${value['uuid']}-Title" class="form-control" placeholder="Log Title" value="${value['title']}">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                        <label for="Log-${value['uuid']}-log" class="form-label">Log Content</label>
+                                                        <textarea class="form-control" name="log" id="Log-${value['uuid']}-log" rows="3">${value['log']}</textarea>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-form="${value['uuid']}" id="Log-${value['uuid']}-Edit">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+
+                                $('#log-list').append(modal);
+
+                                $(`#Log-${value['uuid']}-Edit`).click(function() {
+                                    let formnumber = $(this).data('form');
+                                    let ser_data = $(`#Log-${formnumber}-Form`).serializeArray();
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/log/update/"+formnumber,
+                                        data: ser_data,
+                                        success: function (response) {
+                                            swal.fire({
+                                                icon: 'success',
+                                                title: 'Log Updated'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    location.reload();
+                                                }
+                                            });
+                                        }
+                                    });
+                                })
                             });
                         } 
                     }
