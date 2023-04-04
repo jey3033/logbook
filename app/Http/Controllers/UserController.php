@@ -35,7 +35,7 @@ class UserController extends BaseController
             $result['uri'] = $grCodeUri;    
             return response(json_encode($result),200);
         }
-        $result['message'] = 'False Credential';
+        $result['message'] = 'Email atau Password anda salah, silahkan dicek kembali';
         return response(json_encode($result), 404);
     }
 

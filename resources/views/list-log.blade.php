@@ -164,7 +164,7 @@
                                     rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2><i class="fa-solid fa-file-circle-xmark"></i> Reject</button>`
                                 }else if(value['status'] == 0){
                                     delbtn = `<a href="/log/${value['uuid']}/delete" type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Delete</a>`
-                                    edtbtn = `<a href="" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#edit-modal-${value['uuid']}"><i class="fa-solid fa-file-pen"></i> Edit</a>`
+                                    edtbtn = `<a type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#edit-modal-${value['uuid']}"><i class="fa-solid fa-file-pen"></i> Edit</a>`
                                 }
 
                                 // generate badge

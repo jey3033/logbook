@@ -59,7 +59,7 @@
                     <form id="verification-form" method="post">
                         @csrf
                         <div class="form-group mb-2">
-                            <input type="text" name="verification" class="form-control" id="verificationID" placeholder="Masukan Kode OTP anda">
+                            <input type="text" name="verification" class="form-control" id="verificationID" placeholder="Masukan Kode OTP anda" autocomplete="off">
                         </div>
                         <button type="button" id="submitVerification" class="btn btn-primary">Verify OTP</button>
                     </form>
@@ -83,46 +83,81 @@
                 }
             });
             $('#login-submit').click(function() {
-                $.ajax({
-                    type: "POST",
-                    url: "/login",
-                    data: $('#login-form').serializeArray(),
-                    success: function (response) {
-                        let decResult = $.parseJSON(response);
-                        $('#totp-body').html("<img src='"+decResult.uri+"'>");
-                        totp.toggle();
-                        // window.location = "/dashboard";
-                    },
-                    error: function (response) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Login Error',
-                            text: response.Message
-                        });
+                $('#email').removeClass('is-invalid');
+                $('#password').removeClass('is-invalid');
+                if ($('#email').val() && $('#password').val()) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/login",
+                        data: $('#login-form').serializeArray(),
+                        success: function (response) {
+                            let decResult = $.parseJSON(response);
+                            $('#totp-body').html("<img src='"+decResult.uri+"'>");
+                            totp.toggle();
+                            // window.location = "/dashboard";
+                        },
+                        error: function (response) {
+                            let decResult = $.parseJSON(response.responseText);
+                            $('#email').addClass('is-invalid');
+                            $('#password').addClass('is-invalid');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Login Error',
+                                text: decResult.message
+                            });
+                        }
+                    });
+                }else{
+                    if (!$('#email').val()) {
+                        $('#email').addClass('is-invalid');
                     }
-                });
+                    if (!$('#password').val()) {
+                        $('#password').addClass('is-invalid');
+                    }
+                }
             })
+
+            $('#login-form').submit(function (e) { 
+                e.preventDefault();
+                $('#login-submit').click();
+            });
+
             $('#close-totp').click(function () {
                 totp.hide();
                 verify.show();
-            })
+            });
 
             $('#submitVerification').click(function() {
-                $.ajax({
-                    url: "/user/verifyOTP",
-                    type: "POST",
-                    data: $('#verification-form').serialize(),
-                    async: true,
-                    success: function(result) {
-                        // $('#modal-verify').hide();
-                        if (result == 200) {
-                            window.location = "/dashboard";
-                        }else{
-                            alert("Gagal");
+                $('#verification').removeClass('is-invalid');
+                if ($('#verification').val()) {
+                    $.ajax({
+                        url: "/user/verifyOTP",
+                        type: "POST",
+                        data: $('#verification-form').serialize(),
+                        async: true,
+                        success: function(result) {
+                            // $('#modal-verify').hide();
+                            if (result == 200) {
+                                window.location = "/dashboard";
+                            }else{
+                                $('#verification').addClass('is-invalid');
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Verifikasi Gagal',
+                                    text: "Verifikasi anda gagal, harap periksa kembali kode anda"
+                                });
+                            }
                         }
-                    }
-                })
-            })
+                    })
+                } else {
+                    $('#verification').addClass('is-invalid');
+                }
+            });
+
+            $('#verification-form').submit(function (e) { 
+                e.preventDefault();
+                $('#submitVerification').click();
+            });
         })
     </script>
 </body>
