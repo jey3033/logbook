@@ -76,8 +76,8 @@
                 if (e.which == 13){
                     if ($('#verification').val()) {
                         $('#submitVerification').click();
-                    }
-                    if ($('#email').val() && $('#password').val() && !$('#verification').val()) {
+                    }else 
+                    if ($('#email').val() && $('#password').val()) {
                         $('#login-submit').click();
                     }
                 }
