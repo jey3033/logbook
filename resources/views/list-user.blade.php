@@ -151,7 +151,7 @@
                                                         Action
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="trigger-dropdown-${value['uuid']}">
-                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-profile-${value['uuid']}"><i class="fa-solid fa-eye"></i> View</a>
+                                                        <a class="dropdown-item" href="/user/${value['uuid']}/edit"><i class="fa-solid fa-eye"></i> View</a>
                                                         ${chgsttsbtn}
                                                     </div>
                                                 </div>
@@ -169,38 +169,7 @@
                                         <div class="col-md-3">${status}</div>
                                     </div>`;
                                 
-                                //modal creation
-                                let modal = `<div class="modal fade" id="modal-profile-${value['uuid']}" tabindex="-1" role="dialog" aria-labelledby="modal-title-${value['uuid']}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modal-title-${value['uuid']}">${value['name']}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form method="POST" action='/user/update' id="form-profile-${value['uuid']}">
-                                            <div class="modal-body">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <label for="" class="form-label">Name</label>
-                                                    <input type="text" class="form-control" name="name" placeholder="Masukan Nama User" value='${value['name']}'>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="" class="form-label">Email</label>
-                                                    <input type="text" class="form-control" name="email" placeholder="Masukan Email User" value='${value['email']}'>
-                                                </div>
-                                                <input type="hidden" name="uuid" value="${value['uuid']}">
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>`
-                                
                                 $('#user-list-body').append(data);
-                                $('#parent').append(modal);
                             });
                         }
                     },

@@ -100,13 +100,17 @@ class UserController extends BaseController
     public function update_user() {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         try {
-            $name = $_POST['name'];
-            $uuid = $_POST['uuid'];
-            $email = $_POST['email'];
+            $name = $_POST['Name'];
+            $uuid = $_POST['UUID'];
+            $email = $_POST['Email'];
+            $password = (isset($_POST['Password'])) ? $_POST['Password'] : "";
+            $supervisor = (isset($_POST['Supervisor'])) ? $_POST['Supervisor'] : "";
 
             $user = User::where("uuid", $uuid)->first();
             $user->name = $name;
             $user->email = $email;
+            if($password) $user->password = $password;
+            if($supervisor) $user->supervisor = $supervisor;
             $user->save();
 
             return back();

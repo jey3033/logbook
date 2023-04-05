@@ -26,7 +26,7 @@ $(document).ready(function () {
         });
     });
 
-    //Animate Font-Awesome
+    // Animate Font-Awesome
     $(".nav-link").hover(
         function () {
             // over
@@ -58,4 +58,10 @@ $(document).ready(function () {
             $(this).find(".fa-solid").removeClass("fa-beat");
         }
     );
+
+    // Initialization Select2
+    $("#supervisor-select").select2({
+        allowClear: true,
+        placeholder: "Pilih Supervisor",
+    });
 });

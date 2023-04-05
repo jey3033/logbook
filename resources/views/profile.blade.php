@@ -102,11 +102,6 @@
     </script>
     <script>
         $(document).ready(function () {
-            $('#supervisor-select').select2({
-                allowClear: true,
-                placeholder: "Pilih Supervisor"
-            });
-
             $('#password-tab').hide()
             $('#profile-tab-btn').click(function (e) { 
                 e.preventDefault();

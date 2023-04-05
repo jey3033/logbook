@@ -29,6 +29,7 @@ Route::controller(PageController::class)->group(function() {
     Route::get('/log-list', 'logList');
     Route::get('/user/logout', 'logout');
     Route::get('/user/profile', 'profile');
+    Route::get('user/{uuid}/edit', 'edituser');
     Route::get('/user', 'user');
 });
 

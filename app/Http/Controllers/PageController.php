@@ -36,4 +36,10 @@ class PageController extends Controller
         $list_user = User::where("activated",1)->get();
         return view("list-user",['list_user' => $list_user]);
     }
+
+    public function edituser($uuid) {
+        $data_user = User::where("uuid", $uuid)->first();
+        $list_user = User::where("activated",1)->get();
+        return view("edit-user",['user_data' => $data_user, 'list_user' => $list_user]);
+    }
 }
