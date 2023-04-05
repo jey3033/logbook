@@ -74,7 +74,6 @@
             <a class="nav-link" data-toggle="dropdown" id="profile-btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="{{ Auth::user()->profile_path }}" class="round-prof mr-3 img-circle" alt="">
                 {{-- <i class="fa-solid fa-user"></i> --}}
-                <span class="badge badge-danger navbar-badge">3</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="profile-btn">
                 <a class="dropdown-item" href="/user/profile"><i class="fa-solid fa-user"></i> Profile</a>

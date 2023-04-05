@@ -16,6 +16,7 @@
             </div>
             <div class="card-body">
                 <form id="edit-user-form" method="post">
+                    @csrf
                     <div class="mb-3">
                       <label for="edit-user-name" class="form-label">Name</label>
                       <input type="hidden" name="UUID" value="{!! $user_data['uuid'] !!}">
@@ -52,7 +53,7 @@
 
     <script>
         $(document).ready(function () {
-            $('edit-user-save').click(function (e) { 
+            $('#edit-user-save').click(function (e) { 
                 e.preventDefault();
                 if ($('#edit-user-name').val() && $('#edit-user-email').val()) {
                     $.ajax({
@@ -63,6 +64,13 @@
                             location.href = "/user";
                         }
                     });
+                }else{
+                    if (!$('#edit-user-name').val()) {
+                        $('#edit-user-name').addClass('is-invalid');
+                    }
+                    if (!$('#edit-user-email').val()) {
+                        $('#edit-user-email').addClass('is-invalid');
+                    }
                 }
             });
         });

@@ -126,6 +126,11 @@
                 allowClear: true
             })
 
+            $("#filter-user").select2({
+                allowClear: true,
+                placeholder: "Pilih User",
+            });
+
             $('#filter-submit').click(function (e) { 
                 e.preventDefault();
                 param = $('#log-filter-form').serializeArray();

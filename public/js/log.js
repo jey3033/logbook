@@ -48,16 +48,9 @@ $(document).ready(function () {
         }
     );
 
-    $("button").hover(
-        function () {
-            // over
-            $(this).find(".fa-solid").addClass("fa-beat");
-        },
-        function () {
-            // out
-            $(this).find(".fa-solid").removeClass("fa-beat");
-        }
-    );
+    $(document).on("mouseenter mouseleave", ".btn", function (e) {
+        $(this).find(".fa-solid").toggleClass("fa-beat");
+    });
 
     // Initialization Select2
     $("#supervisor-select").select2({
