@@ -74,7 +74,7 @@
         $(document).ready(function () {
             $(document).keyup(function (e) { 
                 if (e.which == 13){
-                    if ($('#verification').val()) {
+                    if ($('#verificationID').val()) {
                         $('#submitVerification').click();
                     }else 
                     if ($('#email').val() && $('#password').val()) {
@@ -128,19 +128,19 @@
             });
 
             $('#submitVerification').click(function() {
-                $('#verification').removeClass('is-invalid');
-                if ($('#verification').val()) {
+                $('#verificationID').removeClass('is-invalid');
+                if ($('#verificationID').val()) {
                     $.ajax({
                         url: "/user/verifyOTP",
                         type: "POST",
                         data: $('#verification-form').serialize(),
                         async: true,
                         success: function(result) {
-                            // $('#modal-verify').hide();
+                            $('#modal-verify').hide();
                             if (result == 200) {
                                 window.location = "/dashboard";
                             }else{
-                                $('#verification').addClass('is-invalid');
+                                $('#verificationID').addClass('is-invalid');
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Verifikasi Gagal',
@@ -150,7 +150,7 @@
                         }
                     })
                 } else {
-                    $('#verification').addClass('is-invalid');
+                    $('#verificationID').addClass('is-invalid');
                 }
             });
 

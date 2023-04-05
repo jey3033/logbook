@@ -11,7 +11,7 @@
 <body>
     @include('include/topbar')
     <div class="container">
-        <div class="row justify-content-center align-items-center g-2 mb-3">
+        <div class="row justify-content-center align-items-center g-2 pt-1 mb-3">
             {!! $quote !!}
         </div>
         <div class="card text-center">

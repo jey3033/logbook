@@ -59,10 +59,10 @@ class UserController extends BaseController
 
     public function create_user() {
         try {
-            $name = $_POST['name'];            
-            $email = $_POST['email'];
+            $name = $_POST['Name'];            
+            $email = $_POST['Email'];
             $uuid = md5($email);
-            $password = $_POST['password'];
+            $password = $_POST['Password'];
 
             $new_user = [];
             $new_user['name'] = $name;

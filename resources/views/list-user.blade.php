@@ -49,42 +49,43 @@
         </div>
       </div>
     </div>
-
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#new-user-modal">
-        <i class="fa-solid fa-user-plus"></i>  Create New
-    </button>
     
-    <div class="modal fade" id="new-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-user-title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="new-user-title">Add New User</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="new-user-form" method="post">
-                        <div class="mb-3">
-                          <label for="new-user-name" class="form-label">Name</label>
-                          <input type="text" class="form-control" name="Name" id="new-user-name" placeholder="User's Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="new-user-email" class="form-label">Email</label>
-                            <input type="text" class="form-control" name="Email" id="new-user-email" placeholder="User's Email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="new-user-password" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="Password" id="new-user-password" placeholder="User's Password">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="new-user-save" class="btn btn-primary">Save</button>
+    <div class="container" id="user-list">
+        <button type="button" class="btn btn-primary btn-lg mb-2" data-bs-toggle="modal" data-bs-target="#new-user-modal">
+            <i class="fa-solid fa-user-plus"></i>  Create New
+        </button>
+        
+        <div class="modal fade" id="new-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-user-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="new-user-title">Add New User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="new-user-form" method="post">
+                            @csrf
+                            <div class="mb-3">
+                              <label for="new-user-name" class="form-label">Name</label>
+                              <input type="text" class="form-control" name="Name" id="new-user-name" placeholder="User's Name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="new-user-email" class="form-label">Email</label>
+                                <input type="text" class="form-control" name="Email" id="new-user-email" placeholder="User's Email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="new-user-password" class="form-label">Password</label>
+                                <input type="password" class="form-control" name="Password" id="new-user-password" placeholder="User's Password">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="new-user-save" class="btn btn-primary"><i class="fa-solid fa-user-pen"></i> Save</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="container" id="user-list">
+
         <div class="row justify-content-center align-items-center g-2">
             <div class="col-md-3 fw-bold">Action</div>
             <div class="col-md-3 fw-bold">User</div>
@@ -95,7 +96,7 @@
     </div>
     
     <script>
-        const newUser = new bootstrap.Modal(document.getElementById('new-user-modal'), options)
+        const newUser = new bootstrap.Modal(document.getElementById('new-user-modal'))
         $(document).ready(function () {
             var param;
             loadList();
@@ -141,16 +142,16 @@
                                 //button creation
                                 let chgsttsbtn = "";
                                 if (value['activated'] == 1) {
-                                    chgsttsbtn = `<a class="dropdown-item" href="/user/${value['uuid']}/deactuser">Deactivate</a`;                      
+                                    chgsttsbtn = `<a class="dropdown-item" href="/user/${value['uuid']}/deactuser"><i class="fa-solid fa-user-xmark"></i> Deactivate</a`;                      
                                 }else if(value['activated'] == 2){
-                                    chgsttsbtn = `<a class="dropdown-item" href="/user/${value['uuid']}/actuser">Activate</a`;
+                                    chgsttsbtn = `<a class="dropdown-item" href="/user/${value['uuid']}/actuser"><i class="fa-solid fa-user-check"></i> Activate</a`;
                                 }
                                 let button = `<div class="col-md-3 dropdown open">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="trigger-dropdown-${value['uuid']}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Action
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="trigger-dropdown-${value['uuid']}">
-                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-profile-${value['uuid']}">View</a>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-profile-${value['uuid']}"><i class="fa-solid fa-eye"></i> View</a>
                                                         ${chgsttsbtn}
                                                     </div>
                                                 </div>
@@ -205,6 +206,38 @@
                     },
                 });
             }
+
+            $('#new-user-save').click(function (e) { 
+                e.preventDefault();
+                if ($('#new-user-name').val() && $('#new-user-email').val() && $('#new-user-password').val()) {
+                    $('#new-user-name').removeClass('is-invalid');
+                    $('#new-user-email').removeClass('is-invalid');
+                    $('#new-user-password').removeClass('is-invalid');
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/create",
+                        data: $('#new-user-form').serializeArray(),
+                        success: function (response) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    if (!$('#new-user-name').val()) {
+                        $('#new-user-name').addClass('is-invalid');
+                    }
+                    if (!$('#new-user-email').val()) {
+                        $('#new-user-email').addClass('is-invalid');
+                    }
+                    if (!$('#new-user-password').val()) {
+                        $('#new-user-password').addClass('is-invalid');
+                    }
+                }
+            });
+
+            $('#new-user-form').submit(function (e) { 
+                e.preventDefault();
+                $('#new-user-save').click();
+            });
         });
     </script>
 </body>

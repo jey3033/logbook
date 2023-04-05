@@ -37,7 +37,7 @@ Route::controller(UserController::class)->group(function() {
     Route::get('/getuser', 'get_logged_user');
     Route::get('/logout', 'logout');
     Route::get('/listuser', 'get_list_user');
-    Route::post('/createuser', 'create_user');
+    Route::post('/user/create', 'create_user');
     Route::post('/user/update', 'update_user');
     Route::get('/user/{id}/deactuser', 'deactivate_user');
     Route::get('/user/{id}/actuser', 'activate_user');
