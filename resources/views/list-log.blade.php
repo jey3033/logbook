@@ -284,30 +284,39 @@
             // save new log
             $(document).keydown(function (e) { 
                 if (e.which == 13){
-                    if ($('#NewLog-log').val() && $('#NewLog-Title').val()) {
-                        e.preventDefault();
-                        $('#NewLog-Save').click();
-                    }
+                    e.preventDefault();
+                    $('#NewLog-Save').click();
                 }
             });
 
             $('#NewLog-Save').click(function (e) { 
                 e.preventDefault();
-                $.ajax({
-                    type: "POST",
-                    url: "/log/store",
-                    data: $('#NewLog-Form').serializeArray(),
-                    success: function (response) {
-                        swal.fire({
-                            icon: 'success',
-                            title: 'Log Created'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        });
+                if ($('#NewLog-Title').val() && $('#NewLog-log').val()) {
+                    $('#NewLog-Title').removeClass('is-invalid');
+                    $('#NewLog-log').removeClass('is-invalid');
+                    $.ajax({
+                        type: "POST",
+                        url: "/log/store",
+                        data: $('#NewLog-Form').serializeArray(),
+                        success: function (response) {
+                            swal.fire({
+                                icon: 'success',
+                                title: 'Log Created'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    if (!$('#NewLog-Title').val()) {
+                        $('#NewLog-Title').addClass('is-invalid');
                     }
-                });
+                    if (!$('#NewLog-log').val()) {
+                        $('#NewLog-log').addClass('is-invalid');
+                    }
+                }
             });
         });
     </script>

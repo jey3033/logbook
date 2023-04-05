@@ -17,12 +17,12 @@
             <div class="card-body">
                 <p>{{ $log->log }}</p>
             </div>
-            <div class="card-footer text-muted">
-                @if (Auth::user() != $log->user_id)
+            @if (Auth::user() != $log->user_id)
+                <div class="card-footer text-muted">
                     <button type="button" class="btn btn-primary log-response"  uuid="{{ $log->uuid }}" response=1>Accept</button>
                     <button type="button" class="btn btn-danger log-response"  uuid="{{ $log->uuid }}" response=2>Reject</button>
-                @endif
-            </div>
+                </div>
+            @endif
         </div>
     </div>
 </body>

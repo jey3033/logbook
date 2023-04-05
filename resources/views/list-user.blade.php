@@ -49,6 +49,40 @@
         </div>
       </div>
     </div>
+
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#new-user-modal">
+        <i class="fa-solid fa-user-plus"></i>  Create New
+    </button>
+    
+    <div class="modal fade" id="new-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-user-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="new-user-title">Add New User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="new-user-form" method="post">
+                        <div class="mb-3">
+                          <label for="new-user-name" class="form-label">Name</label>
+                          <input type="text" class="form-control" name="Name" id="new-user-name" placeholder="User's Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-user-email" class="form-label">Email</label>
+                            <input type="text" class="form-control" name="Email" id="new-user-email" placeholder="User's Email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-user-password" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="Password" id="new-user-password" placeholder="User's Password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="new-user-save" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="container" id="user-list">
         <div class="row justify-content-center align-items-center g-2">
@@ -61,6 +95,7 @@
     </div>
     
     <script>
+        const newUser = new bootstrap.Modal(document.getElementById('new-user-modal'), options)
         $(document).ready(function () {
             var param;
             loadList();
