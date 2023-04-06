@@ -55,6 +55,8 @@
         $(document).ready(function () {
             $('#edit-user-save').click(function (e) { 
                 e.preventDefault();
+                $('#edit-user-name').removeClass('is-invalid');
+                $('#edit-user-email').removeClass('is-invalid');
                 if ($('#edit-user-name').val() && $('#edit-user-email').val()) {
                     $.ajax({
                         type: "POST",
