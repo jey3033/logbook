@@ -38,15 +38,9 @@ $(document).ready(function () {
         }
     );
 
-    $(".dropdown-item").hover(
-        function () {
-            // over
-            $(this).find(".fa-solid").addClass("fa-beat");
-        },
-        function () {
-            $(this).find(".fa-solid").removeClass("fa-beat");
-        }
-    );
+    $(document).on("mouseenter mouseleave", ".dropdown-item", function (e) {
+        $(this).find(".fa-solid").toggleClass("fa-beat");
+    });
 
     $(document).on("mouseenter mouseleave", ".btn", function (e) {
         $(this).find(".fa-solid").toggleClass("fa-beat");

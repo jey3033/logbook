@@ -177,7 +177,10 @@
                                         swal.fire({
                                             icon: "warning",
                                             title: "Are You Sure ?",
-                                            text: "Are you really sure you want to deactivate this user ?"
+                                            text: "Are you really sure you want to deactivate this user ?",
+                                            showCancelButton: true,
+                                            confirmButtonText: 'Yes, deactivate it!',
+                                            cancelButtonText: 'No, cancel!',
                                         }).then((result) => {
                                             if (result.isConfirmed) {
                                                 location.href = $(`#btn-deact-${value['uuid']}`).attr('href');
@@ -190,7 +193,10 @@
                                         swal.fire({
                                             icon: "warning",
                                             title: "Are You Sure ?",
-                                            text: "Are you really sure you want to activate this user ?"
+                                            text: "Are you really sure you want to activate this user ?",
+                                            showCancelButton: true,
+                                            confirmButtonText: 'Yes, activate it!',
+                                            cancelButtonText: 'No, cancel!',
                                         }).then((result) => {
                                             if (result.isConfirmed) {
                                                 location.href = $(`#btn-act-${value['uuid']}`).attr('href');
