@@ -142,9 +142,9 @@
                                 //button creation
                                 let chgsttsbtn = "";
                                 if (value['activated'] == 1) {
-                                    chgsttsbtn = `<a class="dropdown-item" href="/user/${value['uuid']}/deactuser"><i class="fa-solid fa-user-xmark"></i> Deactivate</a`;                      
+                                    chgsttsbtn = `<a class="dropdown-item" id="btn-deact-${value['uuid']}" href="/user/${value['uuid']}/deactuser"><i class="fa-solid fa-user-xmark"></i> Deactivate</a`;                      
                                 }else if(value['activated'] == 2){
-                                    chgsttsbtn = `<a class="dropdown-item" href="/user/${value['uuid']}/actuser"><i class="fa-solid fa-user-check"></i> Activate</a`;
+                                    chgsttsbtn = `<a class="dropdown-item" id="btn-act-${value['uuid']}" href="/user/${value['uuid']}/actuser"><i class="fa-solid fa-user-check"></i> Activate</a`;
                                 }
                                 let button = `<div class="col-md-3 dropdown open">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="trigger-dropdown-${value['uuid']}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -170,6 +170,34 @@
                                     </div>`;
                                 
                                 $('#user-list-body').append(data);
+
+                                if (value['activated'] == 1) {
+                                    $(`#btn-deact-${value['uuid']}`).click(function (e) { 
+                                        e.preventDefault();
+                                        swal.fire({
+                                            icon: "warning",
+                                            title: "Are You Sure ?",
+                                            text: "Are you really sure you want to deactivate this user ?"
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.href = $(`#btn-deact-${value['uuid']}`).attr('href');
+                                            }
+                                        })
+                                    });
+                                } else {
+                                    $(`#btn-act-${value['uuid']}`).click(function (e) { 
+                                        e.preventDefault();
+                                        swal.fire({
+                                            icon: "warning",
+                                            title: "Are You Sure ?",
+                                            text: "Are you really sure you want to activate this user ?"
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.href = $(`#btn-act-${value['uuid']}`).attr('href');
+                                            }
+                                        })
+                                    });
+                                }
                             });
                         }
                     },
