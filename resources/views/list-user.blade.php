@@ -88,7 +88,7 @@
         </div>
 
         <div class="row justify-content-center align-items-center g-2">
-            <div class="col-md-3 fw-bold">Action</div>
+            <div class="col-md-1 fw-bold text-center">Action</div>
             <div class="col-md-3 fw-bold">User</div>
             <div class="col-md-3 fw-bold">Email</div>
             <div class="col-md-3 fw-bold">Status</div>
@@ -147,7 +147,7 @@
                                 }else if(value['activated'] == 2){
                                     chgsttsbtn = `<a class="dropdown-item" id="btn-act-${value['uuid']}" href="/user/${value['uuid']}/actuser"><i class="fa-solid fa-user-check"></i> Activate</a`;
                                 }
-                                let button = `<div class="col-md-3 dropdown open">
+                                let button = `<div class="col-md-1 dropdown open">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="trigger-dropdown-${value['uuid']}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Action
                                                     </a>
@@ -159,15 +159,15 @@
                                             </div>`;
                                 
                                 //content creation
-                                let status = "active";
+                                let status = `<i class="fa-solid fa-check text-success"></i>`;
                                 if (value['activated'] == 2) {
-                                    status = "non-active";
+                                    status = `<i class="fa-solid fa-xmark text-danger"></i>`;
                                 }
                                 let data = `<div class="row justify-content-center align-items-center g-2 my-3">
                                         ${button}
                                         <div class="col-md-3">${value['name']}</div>
                                         <div class="col-md-3">${value['email']}</div>
-                                        <div class="col-md-3">${status}</div>
+                                        <div class="col-md-3 pl-20">${status}</div>
                                     </div>`;
                                 
                                 $('#user-list-body').append(data);
