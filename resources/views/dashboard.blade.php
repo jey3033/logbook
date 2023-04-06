@@ -10,6 +10,7 @@
 </head>
 <body>
     @include('include/topbar')
+    @include('include/loader')
     <div class="container">
         <div class="row justify-content-center align-items-center g-2 pt-1 mb-3">
             {!! $quote !!}

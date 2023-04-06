@@ -14,16 +14,34 @@ $(document).ready(function () {
         e.preventDefault();
         let uuid = $(this).attr("uuid");
         let data = $(this).attr("response");
-
-        $.ajax({
-            type: "POST",
-            headers: { "X-CSRF-TOKEN": csrf },
-            url: `/log/response/${uuid}`,
-            data: { status: data },
-            success: function (response) {
-                location.reload();
-            },
-        });
+        var cont = 1;
+        if (data == 2) {
+            swal.fire({
+                icon: "warning",
+                title: "Are You Sure ?",
+                text: "Are you really sure you want to reject this log ?",
+                showCancelButton: true,
+                confirmButtonText: "Yes, reject it!",
+                cancelButtonText: "No, cancel!",
+            }).then((result) => {
+                if (result.isDismissed) {
+                    cont = 2;
+                }
+                $("loader").addClass("d-flex");
+                $("loader").removeClass("d-none");
+                if (cont == 1) {
+                    $.ajax({
+                        type: "POST",
+                        headers: { "X-CSRF-TOKEN": csrf },
+                        url: `/log/response/${uuid}`,
+                        data: { status: data },
+                        success: function (response) {
+                            location.reload();
+                        },
+                    });
+                }
+            });
+        }
     });
 
     // Animate Font-Awesome
@@ -50,5 +68,10 @@ $(document).ready(function () {
     $("#supervisor-select").select2({
         allowClear: true,
         placeholder: "Pilih Supervisor",
+    });
+
+    $(document).ajaxComplete(function (event, xhr, settings) {
+        $("#loader").addClass("d-none");
+        $("#loader").removeClass("d-flex");
     });
 });

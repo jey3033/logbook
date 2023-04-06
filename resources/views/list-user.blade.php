@@ -10,6 +10,7 @@
 </head>
 <body id="parent">
     @include('include/topbar')
+    @include('include/loader')
 
     <div class="accordion mb-3" id="filter-panel">
       <div class="accordion-item">

@@ -60,3 +60,11 @@
     background: #ffffff;
     z-index: 2;
 }
+
+#loader {
+    position: absolute;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8);
+}
