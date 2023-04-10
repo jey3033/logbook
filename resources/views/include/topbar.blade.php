@@ -38,7 +38,7 @@
     <div class="container">
       <a href="/dashboard" class="navbar-brand">
         <i class="fa-solid fa-torii-gate"></i>
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">Logbook</span>
       </a>
       <!-- Left navbar links -->
       <ul class="navbar-nav">
