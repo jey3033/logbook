@@ -207,6 +207,20 @@
                 check_pass();
             })
 
+            $('#profile-password-change').click(function (e) {
+                $.ajax({
+                    type: "post",
+                    url: "/user/password/change",
+                    data: $('#password-form').serializeArray(),
+                    success: function (response) {
+                        swal.fire({
+                            icon: 'success',
+                            title: "Password Changed"
+                        })
+                    }
+                });
+            })
+
             function check_pass() {
                 let found = false;
                 $.each($('input[type=password]'), function (index, value) {

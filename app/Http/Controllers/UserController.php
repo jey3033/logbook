@@ -220,4 +220,18 @@ class UserController extends BaseController
             return 400;
         }
     }
+
+    public function change_password() {
+        $uuid = Auth::user()->uuid;
+        $password = $_POST['newPass'];
+        try {
+            $user = User::where("uuid", $uuid)->first();
+            $user->password = bcrypt($password);
+            $user->save();
+
+            return response(json_encode(['Message' => "User {$user->name}'s password is changed"]), 202);
+        } catch (\Throwable $th) {
+            return response(json_encode($th->getMessage()), 404);
+        }
+    }
 }
