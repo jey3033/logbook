@@ -27,6 +27,14 @@
 
                     <div class="mt-1 text-center">
                         <button id="login-submit" type="button" class="btn btn-primary">Submit</button>
+                        <!-- tambahkan script di bawah ini untuk membuat tombol signin google -->
+                        <a class="btn btn-danger" href="{{ '/auth/redirect'}}">Sign In With Google</a>
+                
+                        @if (Route::has('password.request'))
+                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                {{ __('Forgot Your Password?') }}
+                            </a>
+                        @endif
                     </div>
                 </form>
             </div>

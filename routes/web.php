@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
@@ -18,14 +19,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
-});
+})->name('login');
 
 Route::get('/csrf', function() {
     return json_encode(['CSRF' => csrf_token()]);
 });
 
+Route::controller(AuthController::class)->group(function() {
+    Route::get('/auth/redirect', 'redirectToProvider');
+    Route::get('/auth/callback', 'handleProviderCallback');
+});
+
 Route::controller(PageController::class)->group(function() {
-    Route::get('/dashboard', 'dashboard');
+    Route::get('/dashboard', 'dashboard')->name('home');
     Route::get('/log-list', 'logList');
     Route::get('/user/logout', 'logout');
     Route::get('/user/profile', 'profile');

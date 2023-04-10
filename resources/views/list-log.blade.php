@@ -306,12 +306,12 @@
             } 
 
             // save new log
-            $(document).keydown(function (e) { 
-                if (e.which == 13){
-                    e.preventDefault();
-                    $('#NewLog-Save').click();
-                }
-            });
+            // $(document).keydown(function (e) { 
+            //     if (e.which == 13){
+            //         e.preventDefault();
+            //         $('#NewLog-Save').click();
+            //     }
+            // });
 
             $('#NewLog-Save').click(function (e) { 
                 e.preventDefault();
