@@ -35,7 +35,7 @@
                             </div>
                         <div class="col-md-4 mb-3">
                             <label for="filter-status" class="form-label">Status</label>
-                            <select class="form-select" name="users.activated" id="filter-status">
+                            <select class="form-select" name="logs.status" id="filter-status">
                                 <option value=""></option>
                                 <option value="0">Not Accepted</option>
                                 <option value="1">Accepted</option>
