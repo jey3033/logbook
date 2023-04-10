@@ -208,7 +208,7 @@ class UserController extends BaseController
         }
         $user->save();
 
-        return back();
+        return back()->with(['status' => "success", 'message' => "Profile Updated"]);
     }
 
     public function otp_verification() {

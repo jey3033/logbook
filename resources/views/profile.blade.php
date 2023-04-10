@@ -225,6 +225,13 @@
                     $('#profile-password-change').fadeIn();
                 }
             }
+
+            @if (session('status'))
+                swal.fire({
+                    icon: `{{ session('status') }}`,
+                    title: `{{ session('message') }}`
+                });
+            @endif
         });
     </script>
 </body>

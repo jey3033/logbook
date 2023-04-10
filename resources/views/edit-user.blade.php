@@ -63,7 +63,14 @@
                         url: "/user/update",
                         data: $('#edit-user-form').serializeArray(),
                         success: function (response) {
-                            location.href = "/user";
+                            swal.fire({
+                                icon: 'success',
+                                title: 'User Edited'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
                         }
                     });
                 }else{
