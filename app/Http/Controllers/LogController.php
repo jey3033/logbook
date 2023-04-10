@@ -16,8 +16,7 @@ use Illuminate\Support\Str;
 
 use function PHPUnit\Framework\isEmpty;
 
-class LogController extends Controller
-{
+class LogController extends Controller {
     /**
      * Display a listing of the resource.
      *
