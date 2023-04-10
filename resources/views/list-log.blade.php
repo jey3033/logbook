@@ -85,7 +85,7 @@
         
         <!-- Modal -->
         <div class="modal fade" id="NewLog" tabindex="-1" role="dialog" aria-labelledby="NewLogId" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                         <div class="modal-header">
                                 <h5 class="modal-title" id="NewLogId">New Log</h5>
@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="mb-3">
                                   <label for="NewLog-log" class="form-label">Log Content</label>
-                                  <textarea class="form-control" name="log" id="NewLog-log" rows="3"></textarea>
+                                  <textarea class="form-control summernote" name="log" id="NewLog-log" rows="3"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -120,7 +120,17 @@
         const newlog = new bootstrap.Modal(document.getElementById('NewLog'));
         $(document).ready(function () {
             var param;
-            loadList();
+            loadList();            
+            $('#NewLog').on('shown.bs.modal', function () {
+                $('.summernote').summernote({
+                    dialogsInBody: true,
+                    tooltip: false
+                });
+
+                if ($('.note-btn').attr('data-toggle')) {
+                    $('.note-btn').attr('data-bs-toggle', $('.note-btn').attr('data-toggle'));                    
+                }
+            });
             $('#filter-status').select2({
                 placeholder: "Pilih Status",
                 minimumResultsForSearch: Infinity,
