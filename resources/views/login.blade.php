@@ -100,9 +100,12 @@
                         data: $('#login-form').serializeArray(),
                         success: function (response) {
                             let decResult = $.parseJSON(response);
-                            $('#totp-body').html("<img src='"+decResult.uri+"'>");
-                            totp.toggle();
-                            // window.location = "/dashboard";
+                            if (decResult.TOTP) {
+                                $('#totp-body').html("<img src='"+decResult.uri+"'>");
+                                totp.toggle();
+                            } else {
+                                window.location = "/dashboard";
+                            }
                         },
                         error: function (response) {
                             let decResult = $.parseJSON(response.responseText);

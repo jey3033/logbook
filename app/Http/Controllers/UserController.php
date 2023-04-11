@@ -24,6 +24,7 @@ class UserController extends BaseController
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             if(Auth::user()->activated == 2) return response(json_encode(["message" => "Your account is deactivated, please contact your supervisor"]), 401);
             $result['message'] = 'Succesfull Login';
+            $result['TOTP'] = Auth::user()->TOTPEnable;
             $OTP = TOTP::create();
             if (!Auth::user()->secret) {
                 $user = User::where('uuid', Auth::user()->uuid)->first();
