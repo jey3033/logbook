@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="card w-100">
             <div class="card-header">
-                <h1>{{ $log->title }}</h1>
+                <h1>{!! $log->title !!}</h1>
             </div>
             <div class="card-body">
                 <p>{!! $log->log !!}</p>
