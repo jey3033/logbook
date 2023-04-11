@@ -26,6 +26,7 @@ class User extends Authenticatable
         'supervisor',
         'profile_path',
         'secret',
+        'TOTPEnable'
     ];
 
     /**

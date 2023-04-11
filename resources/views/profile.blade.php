@@ -60,6 +60,14 @@
                     @endforeach
                   </select>
                 </div>
+                <div class="form-check form-switch">
+                    <label class="form-check-label float-start" for="TOTPEnable">Enable TOTP</label>
+                    @if ($user_data['TOTPEnable'] == 1)
+                        <input class="form-check-input float-end" type="checkbox" name="TOTP" id="TOTPEnable" checked>
+                    @else
+                        <input class="form-check-input float-end" type="checkbox" name="TOTP" id="TOTPEnable">
+                    @endif
+                </div>
                 <input type="hidden" name="uuid" value="{!! $user_data['uuid'] !!}">
                 <button type="submit" class="btn btn-primary" id="update-data"><i class="fa-solid fa-user-pen"></i> Submit</button>
             </form>

@@ -203,6 +203,11 @@ class UserController extends BaseController
         }
         $user->name = $_POST['name'];
         $user->email = $_POST['email'];
+        if (isset($_POST['TOTP'])) {
+            $user->TOTPEnable = 1;
+        }else{
+            $user->TOTPEnable = 0;
+        }
         if ($_POST['supervisor']) {
             $user->supervisor = $_POST['supervisor'];
         }
