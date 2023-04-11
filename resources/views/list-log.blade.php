@@ -209,7 +209,7 @@
                                                 </div>
                                                 <hr style="margin:0;">
                                                 <div class="card-body">
-                                                    <p class="card-text">${value['log']}</p>
+                                                    <p class="card-text">${value['shortenlog']}</p>
                                                 </div>
                                                 <div class="card-footer">
                                                     <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>
@@ -222,7 +222,7 @@
                                 // generate modal
                                 let modal = `
                                 <div class="modal fade" id="edit-modal-${value['uuid']}" tabindex="-1" role="dialog" aria-labelledby="edit-modal-title-${value['uuid']}" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-dialog modal-xl" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="edit-modal-title-${value['uuid']}">Modal title</h5>
@@ -238,7 +238,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                         <label for="Log-${value['uuid']}-log" class="form-label">Log Content</label>
-                                                        <textarea class="form-control" name="log" id="Log-${value['uuid']}-log" rows="3">${value['log']}</textarea>
+                                                        <textarea class="form-control summernote" name="log" id="Log-${value['uuid']}-log" rows="3">${value['log']}</textarea>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -252,6 +252,17 @@
                                 `
 
                                 $('#log-list').append(modal);
+
+                                $(`#edit-modal-${value['uuid']}`).on('shown.bs.modal', function () {
+                                    $(this).find('.summernote').summernote({
+                                        dialogsInBody: true,
+                                        tooltip: false
+                                    });
+
+                                    if ($(this).find('.note-btn').attr('data-toggle')) {
+                                        $(this).find('.note-btn').attr('data-bs-toggle', $('.note-btn').attr('data-toggle'));                    
+                                    }
+                                });
 
                                 $(`#Log-${value['uuid']}-Edit`).click(function() {
                                     if($(`#Log-${value['uuid']}-Title`).val() && $(`#Log-${value['uuid']}-log`).val()){

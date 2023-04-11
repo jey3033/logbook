@@ -106,7 +106,7 @@
                                     </div>
                                     <hr style="margin:0;">
                                     <div class="card-body">
-                                        <p class="card-text text-start">${value['log']}</p>
+                                        <p class="card-text text-start">${value['shortenlog']}</p>
                                     </div>
                                     <div class="card-footer">
                                         <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>

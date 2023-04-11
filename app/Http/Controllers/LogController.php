@@ -51,7 +51,7 @@ class LogController extends Controller {
         }
         $log = $log->get();
         foreach ($log as $key => $value) {
-            $value->log = Str::words($value->log, 10, '...');
+            $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
         }
         if ($log->isEmpty()) {
             return response(json_encode(["Message" => "Log is Empty"]), 204);
@@ -139,7 +139,7 @@ class LogController extends Controller {
         try {
             $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->Where("users.supervisor",Auth::user()->id)->where("logs.status",0)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at')->get();
             foreach ($data as $key => $value) {
-                $value->log = Str::words($value->log, 10, '...');
+                $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
             }
             if ($data->isEmpty()) {
                 return response(json_encode(["Message" => "Log is Empty"]), 204);
@@ -155,7 +155,7 @@ class LogController extends Controller {
         try {
             $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->Where("logs.user_id", Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at')->get();
             foreach ($data as $key => $value) {
-                $value->log = Str::words($value->log, 10, '...');
+                $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
             }
             if ($data->isEmpty()) {
                 return response(json_encode(["Message" => "Log is Empty"]), 204);
