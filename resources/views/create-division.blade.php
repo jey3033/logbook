@@ -31,13 +31,9 @@
                     @endforeach
                   </select>
                 </div>
-                <div class="form-check form-switch">
+                <div class="form-check form-switch ps-0">
                     <label class="form-check-label float-start" for="division-status">Status</label>
-                    @if ($user_data['Status'] == 1)
-                        <input class="form-check-input float-end" type="checkbox" name="status" id="division-status" checked>
-                    @else
-                        <input class="form-check-input float-end" type="checkbox" name="status" id="division-status">
-                    @endif
+                    <input class="form-check-input float-end" type="checkbox" name="status" id="division-status" checked>
                 </div>
                 <div class="mb-3">
                     <label for="division-member" class="form-label">Division's Member</label>
