@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $user = new User();
         $user->name = "Jeremy Jayanto";
-        $user->email = "jeremy236@gmail.com";
+        $user->email = "web.developer@planetgadget.store";
         $user->password = bcrypt("123456789");
         $user->uuid = md5($user->email);
         $user->activated = 1;
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 
         $user = new User();
         $user->name = "Song Hayoung";
-        $user->email = "shy29@gmail.com";
+        $user->email = "shy29@yopmail.com";
         $user->password = bcrypt("123456789");
         $user->uuid = md5($user->email);
         $user->activated = 1;
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
 
         $user = new User();
         $user->name = "Park Jiwon";
-        $user->email = "pjwtdy@gmail.com";
+        $user->email = "pjwtdy@yopmail.com";
         $user->password = bcrypt("123456789");
         $user->uuid = md5($user->email);
         $user->activated = 1;
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
 
         $user = new User();
         $user->name = "Baek Jiheon";
-        $user->email = "100jiheon@gmail.com";
+        $user->email = "100jiheon@yopmail.com";
         $user->password = bcrypt("123456789");
         $user->uuid = md5($user->email);
         $user->activated = 1;

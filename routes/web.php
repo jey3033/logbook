@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
@@ -32,11 +33,14 @@ Route::controller(AuthController::class)->group(function() {
 
 Route::controller(PageController::class)->group(function() {
     Route::get('/dashboard', 'dashboard')->name('home');
-    Route::get('/log-list', 'logList');
+    Route::get('/log', 'logList');
     Route::get('/user/logout', 'logout');
     Route::get('/user/profile', 'profile');
     Route::get('user/{uuid}/edit', 'edituser');
     Route::get('/user', 'user');
+    
+    Route::get('/division', 'divisionlist');
+    Route::get('/division/create', 'divisioncreate');
 });
 
 Route::controller(UserController::class)->group(function() {
@@ -58,7 +62,7 @@ Route::controller(UserController::class)->group(function() {
 });
 
 Route::controller(LogController::class)->group(function () {
-    Route::get('/log', 'index');
+    Route::get('/log/list', 'index');
     Route::post('/log/store', 'store');
     Route::get('/log/{id}', 'view')->name("viewlog");
     Route::post('/log/response/{id}', 'response');
@@ -66,4 +70,9 @@ Route::controller(LogController::class)->group(function () {
 
     Route::get("/get-outstanding-log", "getLogOutstanding");
     Route::get("/get-personal-log", "getLogPersonal");
+});
+
+Route::controller(DivisionController::class)->group(function () {
+    Route::get('/division/list', 'index');
+    Route::post('/division/store', "store");
 });

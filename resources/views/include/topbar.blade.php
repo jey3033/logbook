@@ -48,11 +48,14 @@
           <a href="/dashboard" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="/log-list" class="nav-link"><i class="fa-solid fa-file-lines"></i> Log</a>
+          <a href="/log" class="nav-link"><i class="fa-solid fa-file-lines"></i> Log</a>
         </li>
         @if (Auth::user()->supervisor == 0)
             <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/user"><i class="fa-solid fa-users-gear"></i> User Management</a>
+                <a class="nav-link" aria-current="page" href="/user"><i class="fa-solid fa-user-gear"></i> User Management</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/division"><i class="fa-solid fa-users-gear"></i> Division Management</a>
             </li>
         @endif
       </ul>

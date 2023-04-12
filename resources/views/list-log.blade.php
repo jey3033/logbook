@@ -154,7 +154,7 @@
             function loadList() {
                 $.ajax({
                     type: "GET",
-                    url: "/log",
+                    url: "/log/list",
                     data: {filter: param},
                     statusCode: {
                         204: function (response) {
