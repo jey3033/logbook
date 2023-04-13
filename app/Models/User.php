@@ -23,7 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'activated',
-        'supervisor',
+        'division',
         'profile_path',
         'secret',
         'TOTPEnable'

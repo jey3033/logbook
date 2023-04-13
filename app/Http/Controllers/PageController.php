@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Division;
 use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class PageController extends Controller
 
     public function profile() {
         if (!Auth::user()) return redirect('/');
-        $list_user = User::where("activated",1)->get();
+        $list_user = Division::where("active",1)->get();
         return view("profile", ["user_data" => Auth::user(), 'list_user' => $list_user]);
     }
     public function logout() {

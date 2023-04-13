@@ -57,6 +57,7 @@ Route::controller(UserController::class)->group(function() {
     Route::post('/user/setphoto', 'edit_profile');
     Route::post('/user/verifyOTP', 'otp_verification');
     Route::post('/user/password/change', 'change_password');
+    Route::get('/user/getprofpict', 'get_profilepicture');
 
     Route::post('/bypasschange', 'change_pass_bypass');
 });

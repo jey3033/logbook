@@ -33,7 +33,7 @@
                 @csrf
                 <div class="d-inline">
                     <label for="Image" class="form-label d-block">Profile</label>
-                    <img src="{{ $user_data['profile_path'] }}" alt="Profile Photo" class="img-fluid mb-3 prof-photo square-300">
+                    <img src="{{ $user_data['profile_path'] }}" alt="Profile Photo" class="img-fluid mb-3 prof-photo">
                     <input class="form-control w-93 mb-3 d-inline" name="image" type="file" id="image" onchange="preview()">
                     <button role="button" onclick="clearImage()" class="btn btn-danger" style="margin-top: -5px;"><i class="fa-solid fa-trash-can"></i> Delete</button>
                 </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="mb-3" id="supervisor-row">
                   <label for="profile-supervisor" class="form-label">Supervisor</label>
-                  <select class="form-control" id="supervisor-select" name="supervisor">
+                  <select class="form-control disabled" id="supervisor-select" name="supervisor">
                     <option value=""></option>
                     @foreach ($list_user as $user)
                         @if ($user['id'] == $user_data['supervisor'])

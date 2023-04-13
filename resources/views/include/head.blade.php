@@ -18,8 +18,8 @@
 <script src="https://kit.fontawesome.com/b82e12c2fb.js" crossorigin="anonymous"></script>
 
 {{-- SummerNote --}}
-<link href="summernote/summernote-bs5.min.css" rel="stylesheet">
-<script src="summernote/summernote-bs5.min.js"></script>
+<link href="{{ asset('summernote/summernote-bs5.min.css') }}" rel="stylesheet">
+<script src="{{ asset('summernote/summernote-bs5.min.js') }}"></script>
 
 {{-- Custom --}}
 <link rel="stylesheet" href=" {{ asset('css/PG.css') }}">

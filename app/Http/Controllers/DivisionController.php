@@ -61,10 +61,20 @@ class DivisionController extends Controller
             $division->name = $_POST['name'];
             $supervisorID = User::where('uuid', $_POST['supervisor'])->first()->id;
             $division->supervisor = $supervisorID;
+            $division->active = 0;
+            if (isset($_POST['status'])) {
+                $division->active = 1;
+            }
             $division->save();
 
             $division->uuid = md5($division->id . $division->name);
             $division->save();
+
+            foreach ($_POST['member'] as $value) {
+                $user = User::where('uuid', $value)->first();
+                $user->division = $division->id;
+                $user->save();
+            }
 
             return response("Division {$division->name} Created");
         } catch (\Throwable $th) {

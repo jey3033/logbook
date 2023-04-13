@@ -240,4 +240,10 @@ class UserController extends BaseController
             return response(json_encode($th->getMessage()), 404);
         }
     }
+
+    public function get_profilepicture() {
+        $uuid = $_GET['uuid'];
+        $profile_path = User::where("uuid", $uuid)->first()->profile_path;
+        return $profile_path;
+    }
 }

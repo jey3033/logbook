@@ -21,9 +21,10 @@
     max-width: 300px;
 }
 
-.square-300 {
+.round-300 {
     width: 300px;
     height: 300px;
+    border-radius: 50%;
 }
 
 .round-prof {
@@ -34,12 +35,19 @@
 
 .prof-photo {
     border-radius: 50%;
+    width: 300px;
+    height: 300px;
 }
 
 .small-icon {
     border-radius: 50%;
     width: 25px;
     height: 25px;
+}
+
+.icon-prof {
+    width: 10px;
+    height: 10px;
 }
 
 /* Text Manipulation */
