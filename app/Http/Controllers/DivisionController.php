@@ -100,9 +100,10 @@ class DivisionController extends Controller
      * @param  \App\Models\Division  $division
      * @return \Illuminate\Http\Response
      */
-    public function edit(Division $division)
-    {
-        //
+    public function edit($uuid) {
+        $division = Division::where('uuid', $uuid)->first();
+        $list_user = User::where("activated",1)->get();
+        return view('edit-division', ['division_data' => $division, 'userlist' => $list_user]);
     }
 
     /**
@@ -112,9 +113,31 @@ class DivisionController extends Controller
      * @param  \App\Models\Division  $division
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDivisionRequest $request, Division $division)
-    {
-        //
+    public function update($uuid) {
+        try {
+            $division = Division::where('uuid', $uuid)->first();
+            $division->name = $_POST['name'];
+            $supervisorID = User::where('uuid', $_POST['supervisor'])->first()->id;
+            $division->supervisor = $supervisorID;
+            $division->active = 0;
+            if (isset($_POST['status'])) {
+                $division->active = 1;
+            }
+            $division->save();
+
+            foreach (User::all() as $key => $value) {
+                $value->division = 0;
+                $value->save();
+            }
+            foreach ($_POST['member'] as $value) {
+                $user = User::where('uuid', $value)->first();
+                $user->division = $division->id;
+                $user->save();
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response($th->getMessage(), 401);
+        }
     }
 
     /**

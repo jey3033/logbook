@@ -82,3 +82,8 @@
 .pl-20 {
     padding-left: 20px;
 }
+
+/* Pointer Manipulation */
+.clickable {
+    cursor: pointer;
+}

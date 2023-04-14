@@ -125,24 +125,24 @@
                                 let supervisor = value['supervisor'];
                                 //button creation
                                 let chgsttsbtn = "";
-                                if (value['status'] == 1) {
-                                    chgsttsbtn = `<a class="dropdown-item" id="btn-deact-${value['uuid']}" href="/user/${value['uuid']}/deactuser"><i class="fa-solid fa-user-xmark"></i> Deactivate</a`;                      
-                                }else if(value['status'] == 2){
-                                    chgsttsbtn = `<a class="dropdown-item" id="btn-act-${value['uuid']}" href="/user/${value['uuid']}/actuser"><i class="fa-solid fa-user-check"></i> Activate</a`;
+                                if (value['active'] == 1) {
+                                    chgsttsbtn = `<a class="dropdown-item" id="btn-deact-${value['uuid']}" href="/division/${value['uuid']}/deactivate"><i class="fa-solid fa-user-xmark"></i> Deactivate</a>`;                      
+                                }else if(value['active'] == 2){
+                                    chgsttsbtn = `<a class="dropdown-item" id="btn-act-${value['uuid']}" href="/division/${value['uuid']}/activate"><i class="fa-solid fa-user-check"></i> Activate</a>`;
                                 }
                                 let button = `<div class="col-md-1 dropdown open">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="trigger-dropdown-${value['uuid']}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Action
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="trigger-dropdown-${value['uuid']}">
-                                                        <a class="dropdown-item" href="/user/${value['uuid']}/edit"><i class="fa-solid fa-eye"></i> View</a>
+                                                        <a class="dropdown-item" href="/division/${value['uuid']}/edit"><i class="fa-solid fa-eye"></i> View</a>
                                                         ${chgsttsbtn}
                                                     </div>
                                                 </div>`;
                                 
                                 //content creation
                                 let status = `<i class="fa-solid fa-check text-success"></i>`;
-                                if (value['status'] == 2) {
+                                if (value['active'] == 2) {
                                     status = `<i class="fa-solid fa-xmark text-danger"></i>`;
                                 }
                                 let data = `<div class="row justify-content-center align-items-center g-2 my-3">

@@ -75,5 +75,7 @@ Route::controller(LogController::class)->group(function () {
 
 Route::controller(DivisionController::class)->group(function () {
     Route::get('/division/list', 'index');
+    Route::get('/division/{uuid}/edit', 'edit');
     Route::post('/division/store', "store");
+    Route::post('/division/{uuid}/update', 'update');
 });
