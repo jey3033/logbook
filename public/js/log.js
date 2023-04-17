@@ -70,6 +70,11 @@ $(document).ready(function () {
         placeholder: "Pilih Supervisor",
     });
 
+    $("#division-select").select2({
+        allowClear: true,
+        placeholder: "Pilih Divisi",
+    });
+
     $(document).ajaxComplete(function (event, xhr, settings) {
         $("#loader").addClass("d-none");
         $("#loader").removeClass("d-flex");

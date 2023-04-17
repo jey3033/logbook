@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Logbook Login Page</title>
+    <title>{!! $user_data['name'] !!}'s Profile</title>
 
     @include('include/head')
     <style>
-        #select2-supervisor-select-container{
+        #select2-division-select-container{
             text-align: start !important;
         }
     </style>
@@ -48,11 +48,11 @@
                     class="form-control" name="email" id="profile-email" placeholder="Email" value="{!! $user_data['email'] !!}">
                 </div>
                 <div class="mb-3" id="supervisor-row">
-                  <label for="profile-supervisor" class="form-label">Supervisor</label>
-                  <select class="form-control disabled" id="supervisor-select" name="supervisor">
+                  <label for="profile-supervisor" class="form-label">Divisi</label>
+                  <select class="form-control disabled" id="division-select" name="supervisor">
                     <option value=""></option>
                     @foreach ($list_user as $user)
-                        @if ($user['id'] == $user_data['supervisor'])
+                        @if ($user['id'] == $user_data['division'])
                             <option value="{!! $user['id'] !!}" selected>{!! $user['name'] !!}</option>
                         @else
                             <option value="{!! $user['id'] !!}">{!! $user['name'] !!}</option>

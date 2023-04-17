@@ -126,7 +126,7 @@ class DivisionController extends Controller
             $division->save();
 
             foreach (User::all() as $key => $value) {
-                $value->division = 0;
+                $value->division = null;
                 $value->save();
             }
             foreach ($_POST['member'] as $value) {
