@@ -151,5 +151,6 @@
           return false;
         }
     </script>
+    @include('firebase')
 </body>
 </html>

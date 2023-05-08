@@ -57,6 +57,9 @@
             <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="/division"><i class="fa-solid fa-users-gear"></i> Division Management</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/setting"><i class="fa-solid fa-gear"></i> Setting</a>
+            </li>
         @endif
       </ul>
       <!-- SEARCH FORM -->

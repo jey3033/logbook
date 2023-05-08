@@ -256,5 +256,6 @@
             @endif
         });
     </script>
+    @include('firebase')
 </body>
 </html>

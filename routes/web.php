@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\GlobalSettingController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
@@ -41,6 +42,8 @@ Route::controller(PageController::class)->group(function() {
     
     Route::get('/division', 'divisionlist');
     Route::get('/division/create', 'divisioncreate');
+
+    Route::get('/setting', 'setting');
 });
 
 Route::controller(UserController::class)->group(function() {
@@ -78,4 +81,8 @@ Route::controller(DivisionController::class)->group(function () {
     Route::get('/division/{uuid}/edit', 'edit');
     Route::post('/division/store', "store");
     Route::post('/division/{uuid}/update', 'update');
+});
+
+Route::controller(GlobalSettingController::class)->group(function() {
+    Route::post('/setting/store', 'store');
 });

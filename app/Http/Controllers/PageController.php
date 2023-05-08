@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Division;
+use App\Models\GlobalSetting;
 use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
@@ -56,5 +57,10 @@ class PageController extends Controller
     public function divisioncreate() {
         $list_user = User::where("activated",1)->get();
         return view('create-division', ['userlist' => $list_user]);
+    }
+
+    public function setting() {
+        $setting = GlobalSetting::first();
+        return view('setting-global', ['setting' => $setting]);
     }
 }
