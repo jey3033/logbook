@@ -1,3 +1,4 @@
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
 <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
@@ -18,8 +19,10 @@
     };
   
     // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const messaging = firebase.messaging();
 
     function startFCM() {
         messaging

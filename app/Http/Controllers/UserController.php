@@ -246,4 +246,12 @@ class UserController extends BaseController
         $profile_path = User::where("uuid", $uuid)->first()->profile_path;
         return $profile_path;
     }
+
+    public function storeToken(Request $request)
+    {
+                Auth::user()->update(['device_key'=>$request->token]);
+                return response()->json(['Token successfully stored.']);
+    }
+  
+    
 }

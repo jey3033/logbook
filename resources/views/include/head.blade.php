@@ -24,3 +24,5 @@
 {{-- Custom --}}
 <link rel="stylesheet" href=" {{ asset('css/PG.css') }}">
 <script src="{{ asset('js/log.js') }}"></script>
+
+<meta name="csrf-token" content="{{ csrf_token() }}">

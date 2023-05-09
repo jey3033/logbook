@@ -9,6 +9,7 @@ use App\Mail\NotifMail;
 use App\Mail\StatusMail;
 use App\Models\User;
 use ETC_Class\Custom_Filter\Custom_Filter as Custom_Filter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -75,6 +76,46 @@ class LogController extends Controller {
                 Mail::to(User::where('id', Auth::user()->supervisor)->first()->email)->send(new NotifMail($new_log));
             }
             $new_log->save();
+
+            $url = 'POST https://fcm.googleapis.com/v1/projects/logbook-2516b/messages:send';
+            $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
+            
+            $serverKey = 'BPTwkZ2F-B4-GdUma0lrQL94mzw3KzzDJAoUkiQbDQ2_7xvYB1w3T-zPDC5MFbnU7TMMxQPkpn4xy81CQGL3UNA';
+    
+            $data = [
+                "registration_ids" => $FcmToken,
+                "notification" => [
+                    "title" => $title,
+                    "body" => $log,  
+                ]
+            ];
+            $encodedData = json_encode($data);
+        
+            $headers = [
+                'Authorization:key=' . $serverKey,
+                'Content-Type: application/json',
+            ];
+        
+            $ch = curl_init();
+        
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+            // Disabling SSL Certificate support temporarly
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+            // Execute post
+            $result = curl_exec($ch);
+            if ($result === FALSE) {
+                die('Curl failed: ' . curl_error($ch));
+            }        
+            // Close connection
+            curl_close($ch);
+            // FCM response
+            // dd($result);
 
             return response(json_encode(["Message" => "log {$log} is created", "ID" => $new_log->id]));
         } catch (\Throwable $th) {
@@ -164,5 +205,10 @@ class LogController extends Controller {
         } catch (\Throwable $th) {
             return response(json_encode($th->getMessage()), 500);
         }
+    }
+
+    public function sendWebNotification(Request $request)
+    {
+                
     }
 }

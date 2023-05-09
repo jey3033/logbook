@@ -49,6 +49,6 @@
             });
         });
     </script>
-    @include('firebase')
+    @include('include/firebase')
 </body>
 </html>

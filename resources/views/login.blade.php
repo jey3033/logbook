@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-
     <script>
         const totp = new bootstrap.Modal(document.getElementById('modal-totp'));
         const verify = new bootstrap.Modal(document.getElementById('modal-verify'));
@@ -103,6 +102,7 @@
                             if (decResult.TOTP) {
                                 $('#totp-body').html("<img src='"+decResult.uri+"'>");
                                 totp.toggle();
+                                startFCM();
                             } else {
                                 window.location = "/dashboard";
                             }
@@ -169,8 +169,74 @@
                 e.preventDefault();
                 $('#submitVerification').click();
             });
+            
         })
     </script>
-    @include('firebase')
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+<script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+            .register("/firebase-messaging-sw.js")
+            .then(function (registration) {
+                console.log(
+                    "Registration successful, scope is:",
+                    registration.scope
+                );
+            })
+            .catch(function (err) {
+                console.log("Service worker registration failed, error:", err);
+            });
+    }
+    var firebaseConfig = {
+        apiKey: "AIzaSyA3hCGYlfO7IEwU4eECxR-66lger0ncRqY",
+        authDomain: "logbook-2516b.firebaseapp.com",
+        projectId: "logbook-2516b",
+        storageBucket: "logbook-2516b.appspot.com",
+        messagingSenderId: "775812407705",
+        appId: "1:775812407705:web:dbfefe9badd3ce7068f308",
+        measurementId: "G-EV50D8H658"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+    function startFCM() {
+        messaging
+            .requestPermission()
+            .then(function () {
+                return messaging.getToken()
+            })
+            .then(function (response) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: '{{ route("store.token") }}',
+                    type: 'POST',
+                    data: {
+                        token: response
+                    },
+                    dataType: 'JSON',
+                    success: function (response) {
+                        console.log('Token stored.');
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            }).catch(function (error) {
+                alert(error);
+            });
+    }
+    messaging.onMessage(function (payload) {
+        const title = payload.notification.title;
+        const options = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(title, options);
+    });
+</script>
 </body>
 </html>

@@ -27,7 +27,8 @@ class User extends Authenticatable
         'division',
         'profile_path',
         'secret',
-        'TOTPEnable'
+        'TOTPEnable',
+        'device_key',
     ];
 
     /**
