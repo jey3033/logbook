@@ -23,7 +23,8 @@ class PageController extends Controller
     public function logList() {
         if (!Auth::user()) return redirect('/');
         $list_user = User::get();
-        return view("list-log", ["username" => Auth::user()->name, 'list_user' => $list_user]);
+        $list_division = Division::get();
+        return view("list-log", ["username" => Auth::user()->name, 'list_user' => $list_user, 'list_division' => $list_division]);
     }
 
     public function profile() {

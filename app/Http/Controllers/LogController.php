@@ -7,6 +7,8 @@ use App\Http\Requests\StoreLogRequest;
 use App\Http\Requests\UpdateLogRequest;
 use App\Mail\NotifMail;
 use App\Mail\StatusMail;
+use App\Models\Division;
+use App\Models\Notification;
 use App\Models\User;
 use ETC_Class\Custom_Filter\Custom_Filter as Custom_Filter;
 use Illuminate\Http\Request;
@@ -66,14 +68,26 @@ class LogController extends Controller {
             // var_dump('aa');die();
             $title = $_POST['title'];
             $log = $_POST['log'];
+            $division = $_POST['division'];
+            $divisionObj = Division::where("uuid", $division)->first();
+            $user = Auth::user();
             $new_log = new Log();
             $new_log->title = $title;
             $new_log->log = $log;
-            $new_log->user_id = Auth::user()->id;
+            $new_log->user_id = $user->id;
+            $new_log->division_id = $divisionObj->id;
             $new_log->uuid = md5($new_log->id.$log);
 
-            if(Auth::user()->supervisor) {
-                Mail::to(User::where('id', Auth::user()->supervisor)->first()->email)->send(new NotifMail($new_log));
+            $notification = new Notification();
+            $notification->header = "New Log Created";
+            $notification->notification = "{$user->name} created new log for {$divisionObj->name}";
+            $notification->sender = $user->id;
+            $notification->receiver = $divisionObj->supervisor;
+
+            $notification->save();
+
+            if($user->supervisor) {
+                Mail::to(User::where('id', $user->supervisor)->first()->email)->send(new NotifMail($new_log));
             }
             $new_log->save();
 
@@ -142,11 +156,20 @@ class LogController extends Controller {
         try {
             $log = Log::where("uuid", $uuid)->first();
             $author = User::where("id", $log->user_id)->first();
+            $divisionObj = Division::where("uuid", $log->division)->first();
             if ($log->status != 0) return response(json_encode(["Message" => "Log has been Responsed"]), 405);
             if ($author->id != Auth::user()->id) return response(json_encode(["Message" => 'You\'re not authorized to edit this log']), 403);
             $log->title = $title;
             $log->log = $text;
             $log->save();
+
+            $notification = new Notification();
+            $notification->header = "Log Updated";
+            $notification->notification = "{$author->name} created new log for {$divisionObj->name}";
+            $notification->sender = $author->id;
+            $notification->receiver = $divisionObj->supervisor;
+
+            $notification->save();
 
             return response(json_encode(["Message" => "Log {$log->uuid} has been updated"]), 202);
         } catch (\Throwable $th) {
@@ -161,6 +184,7 @@ class LogController extends Controller {
             $log = Log::where("uuid", $uuid)->first();
             if (!$log) return response(json_encode(["Message" => "Log Not Found"]), 400);
             $author = User::where("id", $log->user_id)->first();
+            $divisionObj = Division::where("uuid", $log->division)->first();
             if ($author->id == Auth::user()->id) return response(json_encode(["Message" => 'You\'re not authorized to approved your own log']), 403);
             elseif ($author->supervisor_id == Auth::user()->id)  return response(json_encode(["Message" => 'You\'re not this user\'s supervisor']), 401);
             $log->status = $status;
@@ -168,6 +192,15 @@ class LogController extends Controller {
             Mail::to($author->email)->send(new StatusMail($log));
 
             $log->save();
+
+            $notification = new Notification();
+            $notification->header = "Log Responsed";
+            $notification->notification = "Log {$log->title}'s status changed";
+            $notification->sender = $divisionObj->supervisor;
+            $notification->receiver = $author->id;
+
+            $notification->save();
+
 
             return response(json_encode(["Message" => "Log Responsed"]));
         } catch (\Throwable $th) {

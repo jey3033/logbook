@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Division;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,6 +22,7 @@ class CreateLogsTable extends Migration
             $table->text('log');
             $table->tinyInteger("status")->default(0); // 0=created,1=approved,2=rejected 
             $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Division::class);
             $table->timestamps();
         });
     }

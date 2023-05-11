@@ -75,6 +75,17 @@
       </form> --}}
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown open">
+          <a class="nav-link" data-toggle="dropdown" id="notif-badge" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-bell icon-badge"></i>
+            <span class="position-absolute number-badge translate-middle badge rounded-pill badge-danger" id="notification-number">
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </a>
+          <div class="dropdown-menu" id="notif-shortview" aria-labelledby="notif-badge">
+            
+          </div>
+      </li>
         <!-- Profile Dropdown Menu -->
         <li class="nav-item dropdown open">
             <a class="nav-link" data-toggle="dropdown" id="profile-btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -89,4 +100,25 @@
       </ul>
     </div>
   </nav>
+  <script>
+    $.ajax({
+      type: "get",
+      url: "/getnotif",
+      success: function (response) {
+        let decResult = response;
+        let html = "";
+        
+        if(decResult != 0){
+          $.each(decResult.shortlist, function (indexInArray, valueOfElement) { 
+            html += `<div class='dropdown-item'>
+              <b>${valueOfElement.title}</b><br>
+              ${valueOfElement.notification}
+              </div>`;
+          });
+        }
+        $('#notification-number').prepend(decResult.count);
+        $('#notif-shortview').text(html);
+      }
+    });
+  </script>
   <!-- /.navbar -->

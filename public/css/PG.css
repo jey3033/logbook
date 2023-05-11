@@ -87,3 +87,15 @@
 .clickable {
     cursor: pointer;
 }
+
+/* Badge Notification */
+.icon-badge {
+    font-size: larger;
+    vertical-align: bottom;
+    text-align: center;
+}
+
+.number-badge {
+    left: 80% !important;
+    top: 14px !important;
+}

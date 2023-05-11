@@ -100,6 +100,15 @@
                                   <input type="text" name="title" id="NewLog-Title" class="form-control" placeholder="Log Title">
                                 </div>
                                 <div class="mb-3">
+                                    <label for="NewLog-Division" class="form-label">To Division</label>
+                                    <select class="form-select" name="division" id="NewLog-Division">
+                                        <option value=""></option>
+                                        @foreach ($list_division as $division)
+                                            <option value="{!! $division['uuid'] !!}">{!! $division['name'] !!}</option>
+                                        @endforeach
+                                    </select>
+                                  </div>
+                                <div class="mb-3">
                                   <label for="NewLog-log" class="form-label">Log Content</label>
                                   <textarea class="form-control summernote" name="log" id="NewLog-log" rows="3"></textarea>
                                 </div>

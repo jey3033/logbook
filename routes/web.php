@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\GlobalSettingController;
 use App\Http\Controllers\LogController;
@@ -25,6 +26,10 @@ Route::get('/', function () {
 
 Route::get('/csrf', function() {
     return json_encode(['CSRF' => csrf_token()]);
+});
+
+Route::controller(Controller::class)->group(function() {
+    Route::get('/getnotif', 'getNotif');
 });
 
 Route::controller(AuthController::class)->group(function() {
