@@ -210,7 +210,7 @@ class UserController extends BaseController
             $user->TOTPEnable = 0;
         }
         if ($_POST['supervisor']) {
-            $user->supervisor = $_POST['supervisor'];
+            $user->division = $_POST['supervisor'];
         }
         $user->save();
 
@@ -247,8 +247,7 @@ class UserController extends BaseController
         return $profile_path;
     }
 
-    public function storeToken(Request $request)
-    {
+    public function storeToken(Request $request) {
                 Auth::user()->update(['device_key'=>$request->token]);
                 return response()->json(['Token successfully stored.']);
     }

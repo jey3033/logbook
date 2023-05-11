@@ -32,9 +32,10 @@
             <form id="profile-form" method="POST" action="/user/setphoto" enctype="multipart/form-data">
                 @csrf
                 <div class="d-inline">
+
                     <label for="Image" class="form-label d-block">Profile</label>
-                    <img src="{{ $user_data['profile_path'] }}" alt="Profile Photo" class="img-fluid mb-3 prof-photo">
-                    <input class="form-control w-93 mb-3 d-inline" name="image" type="file" id="image" onchange="preview()">
+                    <img src="{{ $user_data['profile_path'] }}" alt="Profile Photo" class="img-fluid mb-3 prof-photo d-block" id="prof-photo">
+                    <input class="form-control w-93 d-inline" name="image" type="file" id="image" onchange="preview()">
                     <button role="button" onclick="clearImage()" class="btn btn-danger" style="margin-top: -5px;"><i class="fa-solid fa-trash-can"></i> Delete</button>
                 </div>
                 <img id="frame" src="" class="img-fluid mt-3 prev-image" />
@@ -110,6 +111,9 @@
     </script>
     <script>
         $(document).ready(function () {
+            if ($('#prof-photo').attr('src')) {
+                $('#prof-photo').removeClass('d-block');
+            }
             $('#password-tab').hide()
             $('#profile-tab-btn').click(function (e) { 
                 e.preventDefault();

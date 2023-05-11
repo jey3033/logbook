@@ -185,7 +185,11 @@
                                 var delbtn = "";
                                 var edtbtn = "";
                                 if (value['name'] != `{!! $username !!}`) {
-                                    accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=1><i class="fa-solid fa-file-circle-check"></i> Accept</button>`
+                                    let nextStatus = value['status']++;
+                                    if (value['status'] == 1) {
+                                        nextStatus = nextStatus++;
+                                    }
+                                    accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=${nextStatus}><i class="fa-solid fa-file-circle-check"></i> Accept</button>`
                                     rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2><i class="fa-solid fa-file-circle-xmark"></i> Reject</button>`
                                 }else if(value['status'] == 0){
                                     delbtn = `<a href="/log/${value['uuid']}/delete" type="button" id="btn-del-${value['uuid']}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Delete</a>`

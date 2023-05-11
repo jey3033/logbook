@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Log extends Model
+class Backlog extends Model
 {
     use HasFactory;
 
     protected $Fillable = [
-        "title",
+        "log_id",
         "log",
         "user_id",
         'next_approver'

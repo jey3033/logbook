@@ -7,6 +7,7 @@ use App\Http\Requests\StoreLogRequest;
 use App\Http\Requests\UpdateLogRequest;
 use App\Mail\NotifMail;
 use App\Mail\StatusMail;
+use App\Models\BackLog;
 use App\Models\Division;
 use App\Models\Notification;
 use App\Models\User;
@@ -70,19 +71,25 @@ class LogController extends Controller {
             $log = $_POST['log'];
             $division = $_POST['division'];
             $divisionObj = Division::where("uuid", $division)->first();
-            $user = Auth::user();
+            $user_id = Auth::user()->id;
+            $user = User::where('id', $user_id)->first();
+            $userDiv = Division::where("id", $user->division)->first();
+            
             $new_log = new Log();
             $new_log->title = $title;
             $new_log->log = $log;
             $new_log->user_id = $user->id;
             $new_log->division_id = $divisionObj->id;
-            $new_log->uuid = md5($new_log->id.$log);
+            $new_log->save();
+
+            $new_log->uuid = md5($new_log->id . $log);
+            $new_log->next_approver = $userDiv->supervisor;
 
             $notification = new Notification();
             $notification->header = "New Log Created";
             $notification->notification = "{$user->name} created new log for {$divisionObj->name}";
             $notification->sender = $user->id;
-            $notification->receiver = $divisionObj->supervisor;
+            $notification->receiver = $userDiv->supervisor;
 
             $notification->save();
 
@@ -90,6 +97,12 @@ class LogController extends Controller {
                 Mail::to(User::where('id', $user->supervisor)->first()->email)->send(new NotifMail($new_log));
             }
             $new_log->save();
+
+            $backlog = new Backlog();
+            $backlog->user_id = $user->id;
+            $backlog->log_id = $new_log->id;
+
+            $backlog->save();
 
             $url = 'POST https://fcm.googleapis.com/v1/projects/logbook-2516b/messages:send';
             $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
@@ -157,6 +170,7 @@ class LogController extends Controller {
             $log = Log::where("uuid", $uuid)->first();
             $author = User::where("id", $log->user_id)->first();
             $divisionObj = Division::where("uuid", $log->division)->first();
+            $authorDiv = Division::where("id", $author->division)->first();
             if ($log->status != 0) return response(json_encode(["Message" => "Log has been Responsed"]), 405);
             if ($author->id != Auth::user()->id) return response(json_encode(["Message" => 'You\'re not authorized to edit this log']), 403);
             $log->title = $title;
@@ -167,9 +181,15 @@ class LogController extends Controller {
             $notification->header = "Log Updated";
             $notification->notification = "{$author->name} created new log for {$divisionObj->name}";
             $notification->sender = $author->id;
-            $notification->receiver = $divisionObj->supervisor;
+            $notification->receiver = ($author->division) ? $authorDiv->supervisor : $divisionObj->supervisor;
 
             $notification->save();
+
+            $backlog = new Backlog();
+            $backlog->user_id = Auth::user()->id;
+            $backlog->log_id = $log->id;
+
+            $backlog->save();
 
             return response(json_encode(["Message" => "Log {$log->uuid} has been updated"]), 202);
         } catch (\Throwable $th) {
@@ -185,22 +205,38 @@ class LogController extends Controller {
             if (!$log) return response(json_encode(["Message" => "Log Not Found"]), 400);
             $author = User::where("id", $log->user_id)->first();
             $divisionObj = Division::where("uuid", $log->division)->first();
+            $worker = User::where("id", $_POST['worker'])->first();
             if ($author->id == Auth::user()->id) return response(json_encode(["Message" => 'You\'re not authorized to approved your own log']), 403);
             elseif ($author->supervisor_id == Auth::user()->id)  return response(json_encode(["Message" => 'You\'re not this user\'s supervisor']), 401);
             $log->status = $status;
+
+            $notification = new Notification();
+            $notification->header = "Log Responsed";
+            $notification->notification = "Log {$log->title}'s status changed";
+            $notification->sender = Auth::user()->id;
+
+            if (in_array($status,[1,4])) {
+                $log->next_approver = $divisionObj->supervisor;
+                $notification->receiver = $log->next_approver;
+            }else if($status == 3) {
+                $log->next_approver = $worker->id;
+                $notification->receiver = $log->next_approver;
+            }else{
+                $log->next_approver = 0;
+                $notification->receiver = $log->user_id;
+            }
+
+            $notification->save();
             
             Mail::to($author->email)->send(new StatusMail($log));
 
             $log->save();
 
-            $notification = new Notification();
-            $notification->header = "Log Responsed";
-            $notification->notification = "Log {$log->title}'s status changed";
-            $notification->sender = $divisionObj->supervisor;
-            $notification->receiver = $author->id;
+            $backlog = new Backlog();
+            $backlog->user_id = Auth::user()->id;
+            $backlog->log_id = $log->id;
 
-            $notification->save();
-
+            $backlog->save();
 
             return response(json_encode(["Message" => "Log Responsed"]));
         } catch (\Throwable $th) {
