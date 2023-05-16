@@ -30,6 +30,7 @@ Route::get('/csrf', function() {
 
 Route::controller(Controller::class)->group(function() {
     Route::get('/getnotif', 'getNotif');
+    Route::get('/readnotif', 'readNotif');
 });
 
 Route::controller(AuthController::class)->group(function() {

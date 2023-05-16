@@ -15,6 +15,7 @@ $(document).ready(function () {
         let uuid = $(this).attr("uuid");
         let data = $(this).attr("response");
         var cont = 1;
+        console.log();
         if (data == 2) {
             swal.fire({
                 icon: "warning",
@@ -29,17 +30,17 @@ $(document).ready(function () {
                 }
                 $("loader").addClass("d-flex");
                 $("loader").removeClass("d-none");
-                if (cont == 1) {
-                    $.ajax({
-                        type: "POST",
-                        headers: { "X-CSRF-TOKEN": csrf },
-                        url: `/log/response/${uuid}`,
-                        data: { status: data },
-                        success: function (response) {
-                            location.reload();
-                        },
-                    });
-                }
+            });
+        }
+        if (cont == 1) {
+            $.ajax({
+                type: "POST",
+                headers: { "X-CSRF-TOKEN": csrf },
+                url: `/log/response/${uuid}`,
+                data: { status: data },
+                success: function (response) {
+                    location.reload();
+                },
             });
         }
     });

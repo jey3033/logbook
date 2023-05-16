@@ -11,6 +11,7 @@ use App\Models\BackLog;
 use App\Models\Division;
 use App\Models\Notification;
 use App\Models\User;
+use Carbon\Carbon;
 use ETC_Class\Custom_Filter\Custom_Filter as Custom_Filter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -154,7 +155,9 @@ class LogController extends Controller {
         $uuid = $id;
         try {
             $log = Log::where("uuid", $uuid)->first();
-            return view('log-view', ['log' => $log]);
+            $workerlist = Division::where('id', $log->division_id)->first()->member()->get();
+            // dd($workerlist);
+            return view('log-view', ['log' => $log, 'list_worker' => $workerlist]);
         } catch (\Throwable $th) {
             return response(json_encode($th->getMessage()), 500);
         }
@@ -204,8 +207,8 @@ class LogController extends Controller {
             $log = Log::where("uuid", $uuid)->first();
             if (!$log) return response(json_encode(["Message" => "Log Not Found"]), 400);
             $author = User::where("id", $log->user_id)->first();
-            $divisionObj = Division::where("uuid", $log->division)->first();
-            $worker = User::where("id", $_POST['worker'])->first();
+            $divisionObj = Division::where("id", $log->division_id)->first();
+            if(isset($_POST['worker'])) { $worker = User::where("uuid", $_POST['worker'])->first(); }
             if ($author->id == Auth::user()->id) return response(json_encode(["Message" => 'You\'re not authorized to approved your own log']), 403);
             elseif ($author->supervisor_id == Auth::user()->id)  return response(json_encode(["Message" => 'You\'re not this user\'s supervisor']), 401);
             $log->status = $status;
@@ -215,11 +218,18 @@ class LogController extends Controller {
             $notification->notification = "Log {$log->title}'s status changed";
             $notification->sender = Auth::user()->id;
 
-            if (in_array($status,[1,4])) {
+            if ($status == 1) {
                 $log->next_approver = $divisionObj->supervisor;
                 $notification->receiver = $log->next_approver;
             }else if($status == 3) {
+                $date = $log->updated_at->addDays($_POST['date']);
+                $log->due_date = $date->toDateString();
                 $log->next_approver = $worker->id;
+                $notification->receiver = $log->next_approver;
+            }else if($status == 4) {
+                $divID = User::where('id', $log->next_approver)->first()->division;
+                $division = Division::where('id', $divID)->first();
+                $log->next_approver = $division->supervisor;
                 $notification->receiver = $log->next_approver;
             }else{
                 $log->next_approver = 0;
@@ -247,7 +257,7 @@ class LogController extends Controller {
     public function getLogOutstanding() {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         try {
-            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->Where("users.supervisor",Auth::user()->id)->where("logs.status",0)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at')->get();
+            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->where("logs.next_approver",Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at', 'logs.due_date')->get();
             foreach ($data as $key => $value) {
                 $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
             }
@@ -263,7 +273,7 @@ class LogController extends Controller {
     public function getLogPersonal() {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         try {
-            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->Where("logs.user_id", Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at')->get();
+            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->Where("logs.user_id", Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at', 'logs.due_date')->get();
             foreach ($data as $key => $value) {
                 $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
             }

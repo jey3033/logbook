@@ -111,14 +111,24 @@
         if(decResult != 0){
           $.each(decResult.shortlist, function (indexInArray, valueOfElement) { 
             html += `<div class='dropdown-item'>
-              <b>${valueOfElement.title}</b><br>
+              <b>${valueOfElement.header}</b><br>
               ${valueOfElement.notification}
               </div>`;
           });
         }
         $('#notification-number').prepend(decResult.count);
-        $('#notif-shortview').text(html);
+        $('#notif-shortview').html(html);
       }
     });
+
+    document.getElementById('notif-badge').addEventListener('shown.bs.dropdown', function() {
+      $.ajax({
+        type: "get",
+        url: "/readnotif",
+        success: function (response) {
+          $('#notification-number').html(0);
+        }
+      });
+    })
   </script>
   <!-- /.navbar -->

@@ -20,6 +20,7 @@ class CreateNotificationsTable extends Migration
             $table->text('notification');
             $table->integer('receiver');
             $table->integer('sender');
+            $table->integer('read')->default(0);
         });
     }
 

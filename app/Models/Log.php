@@ -15,4 +15,8 @@ class Log extends Model
         "user_id",
         'next_approver'
     ];
+
+    public function author() {
+        return User::where("id", $this->user_id)->first();
+    }
 }

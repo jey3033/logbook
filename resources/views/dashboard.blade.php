@@ -12,7 +12,7 @@
     @include('include/topbar')
     @include('include/loader')
     <div class="container">
-        <div class="row justify-content-center align-items-center g-2 pt-1 mb-3">
+        <div class="row justify-content-center align-items-center g-2 pt-1 mt-1 mb-3">
             {!! $quote !!}
         </div>
         <div class="card text-center">
@@ -76,18 +76,65 @@
                     var accbtn = ""
                     var rejbtn = ""
                     if (value['name'] != `{!! $username !!}`) {
-                        accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response" response=1><i class="fa-solid fa-file-circle-check"></i> Accept</button>`
-                        rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response" response=2><i class="fa-solid fa-file-circle-xmark"></i> Reject</button>`
+                        let nextStatus = value['status']+1;
+                        if (value['status'] == 1) {
+                            nextStatus = nextStatus+1;
+                        }
+                        accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response float-end" response=${nextStatus}><i class="fa-solid fa-file-circle-check"></i> Terima</button>`
+                        rejbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-danger log-response float-end mt-1" response=2><i class="fa-solid fa-file-circle-xmark"></i> Tolak</button>`
+                        if (nextStatus == 3) {
+                            accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response float-end" disabled response=${nextStatus}><i class="fa-solid fa-file-circle-check"></i> Terima</button>`
+                        }else if (nextStatus == 4) {
+                            accbtn = `<button type="button" uuid=${value['uuid']} class="btn btn-success log-response float-end" response=${nextStatus}><i class="fa-solid fa-file-circle-check"></i> Selesai</button>`
+                            rejbtn = '' 
+                        }
+                        
                     }
 
                     // generate badge
                     var badge = "";
                     if (value['status'] == 0) {
-                        badge = `<span class="badge rounded-pill bg-warning align-self-end w-25 position-relative log-badge">Not Accepted</span>`
-                    }else if (value['status'] == 1) {
-                        badge = `<span class="badge rounded-pill bg-success align-self-end w-25 position-relative log-badge">Accepted</span>`
+                        badge = `<span class="badge rounded-pill bg-warning align-self-end w-25 position-relative log-badge">Pending</span>`
+                    }else if ($.inArray(value['status'], [1, 4]) >= 0) {
+                        badge = `<span class="badge rounded-pill bg-primary align-self-end w-25 position-relative log-badge">Proses</span>`
                     }else if (value['status'] == 2) {
-                        badge = `<span class="badge rounded-pill bg-danger align-self-end w-25 position-relative log-badge">Rejected</span>`
+                        badge = `<span class="badge rounded-pill bg-danger align-self-end w-25 position-relative log-badge">Ditolak</span>`
+                    }else if (value['status'] == 5) {
+                        badge = `<span class="badge rounded-pill bg-success align-self-end w-25 position-relative log-badge">Selesai</span>`                        
+                    }else if (value['status'] == 3) {
+                        let cur = new Date()
+                        let duedate = new Date(value['due_date'])
+                        let diffTime = Math.abs(duedate - cur);
+                        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+                        // console.log(diffDays);
+                        if (diffDays > 0) {
+                            badge = `<span class="badge rounded-pill bg-warning align-self-end w-25 position-relative log-badge">${diffDays} Hari</span>`    
+                        } else if(diffDays == 0) {
+                            badge = `<span class="badge rounded-pill bg-danger align-self-end w-25 position-relative log-badge">target Hari ini</span>`
+                        } else {
+                            diffDays = diffDays * -1;
+                            badge = `<span class="badge rounded-pill bg-danger align-self-end w-25 position-relative log-badge">terlewat ${diffDays} Hari</span>`
+                        }
+                        
+                    }
+
+                    //Detail Status Generation
+                    let status = '';
+                    let statusinfo = "";
+                    if (value['status'] == 0) {
+                        status = 'Menunggu approval head departemen';
+                    } else if (value['status'] == 1) {
+                        status = 'Menunggu approval head departemen tujuan';
+                        statusinfo = `<span class='float-start text-start w-px-200'>harap melihat detail pengerjaan sebelum melanjutkan request</span>`;
+                    } else if (value['status'] == 2) {
+                        status = 'Ditolak';
+                    } else if (value['status'] == 3) {
+                        status = 'Dalam pengerjaan departemen tujuan';
+                    } else if (value['status'] == 4) {
+                        status = 'Hasil dalam review head departemen';
+                    } else if (value['status'] == 5) {
+                        status = 'Selesai';
                     }
 
                     // image generate
@@ -102,16 +149,22 @@
                                     <div class="card-body">
                                         <h4 class="card-title text-start">${value['title']}</h4>
                                         <h6 class="card-subtitle text-muted text-start"> created by : ${image} ${value['name']}</h6>
+                                        <h6 class="card-subtitle text-muted text-start"> status : ${status}</h6>
                                         <h6 class="card-subtitle text-muted text-start"> last updated : ${value['updated_at']}</h6>
                                     </div>
                                     <hr style="margin:0;">
                                     <div class="card-body">
                                         <p class="card-text text-start">${value['shortenlog']}</p>
                                     </div>
-                                    <div class="card-footer">
-                                        <a class="btn btn-primary me-1" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>
-                                        ${accbtn}
-                                        ${rejbtn}
+                                    <div class="card-footer d-grid">
+                                        <div>
+                                            <a class="btn btn-primary float-start" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>
+                                            ${accbtn}
+                                        </div>
+                                        <div class=''>
+                                            ${statusinfo}
+                                            ${rejbtn}
+                                        </div>
                                     </div>
                                 </div>`;
                     $(`#${parent}-row-${rowid}`).append(html)
