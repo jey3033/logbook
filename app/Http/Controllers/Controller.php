@@ -23,8 +23,9 @@ class Controller extends BaseController
 
     public function readNotif() {
         $notif = Notification::where('receiver', Auth::user()->id);
-        foreach ($notif as $key => $value) {
+        foreach ($notif->get() as $key => $value) {
             $toRead = Notification::where('id', $value['id'])->first();
+            // var_dump($toRead);
             $toRead->read = 1;
             $toRead->save();
         }
