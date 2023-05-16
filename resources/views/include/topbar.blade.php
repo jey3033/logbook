@@ -79,7 +79,6 @@
           <a class="nav-link" data-toggle="dropdown" id="notif-badge" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa-solid fa-bell icon-badge"></i>
             <span class="position-absolute number-badge translate-middle badge rounded-pill badge-danger" id="notification-number">
-              <span class="visually-hidden">unread messages</span>
             </span>
           </a>
           <div class="dropdown-menu" id="notif-shortview" aria-labelledby="notif-badge">
