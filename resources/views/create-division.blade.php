@@ -31,6 +31,12 @@
                     @endforeach
                   </select>
                 </div>
+                @if (Auth::user()->id == 5)
+                <div class="mb-3">
+                  <label for="division-due-date" class="form-label">Due Date</label>
+                  <input type="text" class="form-control" name="due_date" id="division-name" placeholder="Target Penyelesaian Request">
+                </div>
+                @endif
                 <div class="form-check form-switch ps-0">
                     <label class="form-check-label float-start" for="division-status">Status</label>
                     <input class="form-check-input float-end" type="checkbox" name="status" id="division-status" checked>

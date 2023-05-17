@@ -61,6 +61,7 @@ class DivisionController extends Controller
             $division->name = $_POST['name'];
             $supervisorID = User::where('uuid', $_POST['supervisor'])->first()->id;
             $division->supervisor = $supervisorID;
+            $division->due_date_acceptances = $_POST['due_date'];
             $division->active = 0;
             if (isset($_POST['status'])) {
                 $division->active = 1;

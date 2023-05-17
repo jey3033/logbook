@@ -17,6 +17,7 @@ class CreateDivisionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('supervisor');
+            $table->integer('due_date_acceptance');
             $table->timestamps();
 
             $table->foreign('supervisor')->references('id')->on('users');
