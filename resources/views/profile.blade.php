@@ -32,7 +32,6 @@
             <form id="profile-form" method="POST" action="/user/setphoto" enctype="multipart/form-data">
                 @csrf
                 <div class="d-inline">
-
                     <label for="Image" class="form-label d-block">Profile</label>
                     <img src="{{ $user_data['profile_path'] }}" alt="Profile Photo" class="img-fluid mb-3 prof-photo d-block" id="prof-photo">
                     <input class="form-control w-93 d-inline" name="image" type="file" id="image" onchange="preview()">

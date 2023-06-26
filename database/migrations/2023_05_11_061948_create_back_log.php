@@ -19,6 +19,7 @@ class CreateBackLog extends Migration
             $table->id();
             $table->foreignIdFor(Log::class);
             $table->foreignIdFor(User::class);
+            $table->Integer('status');
             $table->timestamps();
         });
     }

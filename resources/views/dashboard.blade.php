@@ -126,7 +126,8 @@
                         status = 'Menunggu approval head departemen';
                     } else if (value['status'] == 1) {
                         status = 'Menunggu approval head departemen tujuan';
-                        statusinfo = `<span class='float-start text-start w-px-200'>harap melihat detail pengerjaan sebelum melanjutkan request</span>`;
+                        // statusinfo = `<span class='float-start text-start w-px-200'>harap melihat detail pengerjaan sebelum melanjutkan request</span>`;
+
                     } else if (value['status'] == 2) {
                         status = 'Ditolak';
                     } else if (value['status'] == 3) {
@@ -144,7 +145,7 @@
                     }
 
                     // generate content
-                    let html = `<div class="col-md-3 col-w-4 mx-2 my-2 card">
+                    let html = `<div class="col-md-3 col-w-4 mx-2 my-2 card" id="card-${value['uuid']}">
                                     ${badge}
                                     <div class="card-body">
                                         <h4 class="card-title text-start">${value['title']}</h4>
@@ -158,7 +159,7 @@
                                     </div>
                                     <div class="card-footer d-grid">
                                         <div>
-                                            <a class="btn btn-primary float-start" href="/log/${value['uuid']}" role="button"><i class="fa-solid fa-eye"></i> View</a>
+                                            <a class="btn btn-primary float-start" href="/log/${value['uuid']}" role="button" id="view-${value['uuid']}"><i class="fa-solid fa-eye"></i> View</a>
                                             ${accbtn}
                                         </div>
                                         <div class=''>
@@ -167,7 +168,21 @@
                                         </div>
                                     </div>
                                 </div>`;
-                    $(`#${parent}-row-${rowid}`).append(html)
+                    $(`#${parent}-row-${rowid}`).append(html);
+                    if (value['status'] == 1) {
+                        let card = document.getElementById(`card-${value['uuid']}`);
+                        let viewbtn  = document.getElementById(`view-${value['uuid']}`)
+                        tooltip = new bootstrap.Tooltip(viewbtn, {
+                            placement: 'bottom',
+                            title: "Lihat detail sebelum melanjutkan"
+                        })
+                        $(`#card-${value['uuid']}`).hover(function () {
+                                tooltip.show();                                
+                            }, function () {
+                                tooltip.hide();
+                            }
+                        );
+                    }
                 });
             }
 
