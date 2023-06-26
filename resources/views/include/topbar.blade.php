@@ -75,7 +75,7 @@
       </form> --}}
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown open">
+        <li class="nav-item dropdown open self-center">
           <a class="nav-link" data-toggle="dropdown" id="notif-badge" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa-solid fa-bell icon-badge"></i>
             <span class="position-absolute number-badge translate-middle badge rounded-pill badge-danger" id="notification-number">

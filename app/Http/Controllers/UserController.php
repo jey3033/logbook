@@ -248,8 +248,8 @@ class UserController extends BaseController
     }
 
     public function storeToken(Request $request) {
-                Auth::user()->update(['device_key'=>$request->token]);
-                return response()->json(['Token successfully stored.']);
+        Auth::user()->update(['device_key'=>$request->token]);
+        return response()->json(['Token successfully stored.']);
     }
   
     

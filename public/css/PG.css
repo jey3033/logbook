@@ -103,3 +103,8 @@
     left: 80% !important;
     top: 14px !important;
 }
+
+/* Alignment Manipulation */
+.self-center {
+    align-self: center;
+}

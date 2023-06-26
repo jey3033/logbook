@@ -23,21 +23,7 @@
                 <span class="text-muted">Dibuat : {{ $log->created_at }}</span><br>
                 <span class="text-muted">Terakhir diupdate : {{ $log->updated_at }}</span><br>
                 <span class="text-muted">Pemohon : <img src="{{ $log->author()->profile_path }}" class="small-icon" alt=""> {{ $log->author()->name }}</span><br>
-                <span class="text-muted">Status : 
-                    @if ($log->status == 0)
-                        Menunggu approval head departemen
-                    @elseif ($log->status == 1)
-                        Menunggu approval head departemen tujuan
-                    @elseif ($log->status == 2)
-                        Ditolak
-                    @elseif ($log->status == 3)
-                        Dalam pengerjaan departemen tujuan
-                    @elseif ($log->status == 4) 
-                        Hasil dalam review head departemen
-                    @elseif ($log->status == 5)
-                        Selesai
-                    @endif
-                </span>
+                <span class="text-muted">Status : {{ $log->get_status() }} </span>
                 <hr>
                 <p>{!! $log->log !!}</p>
             </div>
@@ -78,7 +64,7 @@
                     table-borderless
                     table-primary
                     align-middle">
-                        <thead class="table-light">
+                        <thead class="">
                             <tr>
                                 <th>User</th>
                                 <th>Status</th>
@@ -86,16 +72,13 @@
                             </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                                <tr class="table-primary" >
-                                    <td scope="row">Item</td>
-                                    <td>Item</td>
-                                    <td>Item</td>
-                                </tr>
-                                <tr class="table-primary">
-                                    <td scope="row">Item</td>
-                                    <td>Item</td>
-                                    <td>Item</td>
-                                </tr>
+                                @foreach ($log->history() as $item)
+                                    <tr class="table-primary">
+                                        <td class="col-name">{{ $item->get_user()->name }}</td>
+                                        <td class="col-status">{{ $item->get_status() }}</td>
+                                        <td class="col-date">{{ $item->created_at }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 
