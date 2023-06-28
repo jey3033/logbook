@@ -92,7 +92,7 @@ class UserController extends BaseController
             }
         }
 
-        $user = $user->get();
+        $user = $user->latest()->get();
         if ($user->isEmpty()) {
             return response(json_encode(["Message" => "USer List is Empty"]), 204);
         }

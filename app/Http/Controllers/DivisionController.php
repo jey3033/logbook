@@ -7,6 +7,7 @@ use App\Http\Requests\StoreDivisionRequest;
 use App\Http\Requests\UpdateDivisionRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 class DivisionController extends Controller
@@ -30,7 +31,7 @@ class DivisionController extends Controller
             }
         }
 
-        $division = $division->get();
+        $division = $division->latest()->get();
         
         if ($division->isEmpty()) {
             return response(json_encode(["Message" => "No Division Yet"]), 204);

@@ -93,6 +93,22 @@
 
     <script>
         $(document).ready(function () {
+            $.each($('.col-date'), function (i, e) { 
+                let data = $('.col-date').eq(i).text();
+                let date = new Date(data);
+                let text = date.toLocaleString("id", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                });
+                text = text.replace("pukul", "");
+                text = text.replace(".", ":");text = text.replace(".", ":");
+                $('.col-date').eq(i).text(text);
+            });
+
             $('#log-response-work').click(function (e) { 
                 e.preventDefault();
                 let uuid = $(this).attr("uuid");

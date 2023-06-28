@@ -21,7 +21,7 @@ class Log extends Model
     }
 
     public function history() {
-        return Backlog::where('log_id', $this->id)->get();
+        return Backlog::where('log_id', $this->id)->latest()->get();
     }
 
     function get_status() {
