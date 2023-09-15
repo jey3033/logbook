@@ -35,6 +35,10 @@
                     @endforeach
                   </select>
                 </div>
+                <div class="mb-3">
+                  <label for="division-kpi" class="form-label">Batas Hari Persetujuan</label>
+                  <input type="number" class="form-control" name="due_date_acceptance" id="division-kpi" placeholder="Jumlah Hari Persetujuan" value="{!! $division_data['due_date_acceptance'] !!}">
+                </div>
                 <div class="form-check form-switch ps-0">
                     <label class="form-check-label float-start" for="division-status">Status</label>
                     @if ($division_data['active'] == 1)

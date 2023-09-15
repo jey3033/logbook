@@ -64,6 +64,7 @@
             <div class="col-md-1 fw-bold text-center">Action</div>
             <div class="col-md-3 fw-bold">Name</div>
             <div class="col-md-3 fw-bold">Supervisor</div>
+            <div class="col-md-2 fw-bold">Batas Persetujuan</div>
             <div class="col-md-3 fw-bold">Status</div>
         </div>
         <div id="division-list-body"></div>
@@ -149,6 +150,7 @@
                                         ${button}
                                         <div class="col-md-3">${value['name']}</div>
                                         <div class="col-md-3">${value['supervisor']}</div>
+                                        <div class="col-md-2">${value['due_date_acceptance']}</div>
                                         <div class="col-md-3 pl-20">${status}</div>
                                     </div>`;
                                 

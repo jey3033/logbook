@@ -21,7 +21,7 @@ class DivisionController extends Controller
     {
         //
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
-        $division = DB::table('divisions')->join('users', "divisions.supervisor", "=", "users.id")->select("divisions.name", "users.name as supervisor", "divisions.active", "divisions.uuid");
+        $division = DB::table('divisions')->join('users', "divisions.supervisor", "=", "users.id")->select("divisions.name", "users.name as supervisor", "divisions.due_date_acceptance", "divisions.active", "divisions.uuid");
         if (isset($_REQUEST['filter'])) {
             foreach ($_REQUEST['filter'] as $key => $value) {
                 if($value['value'] != null) {
@@ -31,7 +31,7 @@ class DivisionController extends Controller
             }
         }
 
-        $division = $division->latest()->get();
+        $division = $division->orderBy('divisions.created_at', 'desc')->get();
         
         if ($division->isEmpty()) {
             return response(json_encode(["Message" => "No Division Yet"]), 204);
@@ -62,7 +62,7 @@ class DivisionController extends Controller
             $division->name = $_POST['name'];
             $supervisorID = User::where('uuid', $_POST['supervisor'])->first()->id;
             $division->supervisor = $supervisorID;
-            $division->due_date_acceptances = $_POST['due_date'];
+            $division->due_date_acceptance = $_POST['due_date_acceptance'];
             $division->active = 0;
             if (isset($_POST['status'])) {
                 $division->active = 1;
@@ -120,6 +120,7 @@ class DivisionController extends Controller
             $division = Division::where('uuid', $uuid)->first();
             $division->name = $_POST['name'];
             $supervisorID = User::where('uuid', $_POST['supervisor'])->first()->id;
+            $division->due_date_acceptance = $_POST['due_date_acceptance'];
             $division->supervisor = $supervisorID;
             $division->active = 0;
             if (isset($_POST['status'])) {

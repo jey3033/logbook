@@ -34,7 +34,7 @@
                 @if (Auth::user()->id == 5)
                 <div class="mb-3">
                   <label for="division-due-date" class="form-label">Due Date</label>
-                  <input type="text" class="form-control" name="due_date" id="division-name" placeholder="Target Penyelesaian Request">
+                  <input type="text" class="form-control" name="due_date_acceptance" id="division-name" placeholder="Target Penyelesaian Request">
                 </div>
                 @endif
                 <div class="form-check form-switch ps-0">
