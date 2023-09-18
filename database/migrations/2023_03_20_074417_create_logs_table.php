@@ -25,6 +25,7 @@ class CreateLogsTable extends Migration
             $table->foreignIdFor(Division::class);
             $table->integer("next_approver")->nullable();
             $table->date("due_date")->nullable();
+            $table->tinyInteger("trashed")->nullable();
             $table->timestamps();
         });
     }

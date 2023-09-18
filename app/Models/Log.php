@@ -44,4 +44,14 @@ class Log extends Model
             return 'Selesai';
         }
     }
+
+    function canDelete(){
+        if ($this->status == 0) return true;
+        return false;
+    }
+
+    function softDelete(){
+        $this->trashed = 1;
+        $this->save();
+    }
 }

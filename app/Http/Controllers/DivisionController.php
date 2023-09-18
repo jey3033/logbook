@@ -32,6 +32,12 @@ class DivisionController extends Controller
         }
 
         $division = $division->orderBy('divisions.created_at', 'desc')->get();
+
+        foreach ($division as $key => $value) {
+            if (!$value->due_date_acceptance) {
+                $value->due_date_acceptance = 0;
+            }
+        }
         
         if ($division->isEmpty()) {
             return response(json_encode(["Message" => "No Division Yet"]), 204);

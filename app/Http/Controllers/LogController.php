@@ -27,10 +27,10 @@ class LogController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index() {   
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         $log = Log::where("user_id", Auth::user()->id)->get();
-        $log = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at');
+        $log = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->leftJoin('divisions', "users.id", "=", "divisions.supervisor")->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at')->where("logs.trashed", null)->orWhere("logs.trashed", 0);
         if (isset($_REQUEST['filter'])) {
             foreach ($_REQUEST['filter'] as $key => $value) {
                 if ($value['name'] == 'users.id' && $value['value'] != null) {
@@ -51,9 +51,11 @@ class LogController extends Controller {
                 }
             }
         }else {
-            $log = $log->where("logs.user_id", Auth::user()->id)->orWhere("users.supervisor",Auth::user()->id);
+            $log = $log->where("logs.user_id", Auth::user()->id)->orWhere("divisions.supervisor",Auth::user()->id);
         }
-        $log = $log->latest()->get();
+
+        $log = $log->orderBy('logs.created_at', 'desc')->get();
+        // dd($log->toSql());
         foreach ($log as $key => $value) {
             $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
         }
@@ -74,12 +76,14 @@ class LogController extends Controller {
             $user_id = Auth::user()->id;
             $user = User::where('id', $user_id)->first();
             $userDiv = Division::where("id", $user->division)->first();
+            if (!$userDiv) $userDiv = Division::where("supervisor", $user_id)->where("id", "<>", $division)->first(); 
             
             $new_log = new Log();
             $new_log->title = $title;
             $new_log->log = $log;
             $new_log->user_id = $user->id;
             $new_log->division_id = $divisionObj->id;
+            $new_log->trashed = 0;
             $new_log->save();
 
             $new_log->uuid = md5($new_log->id . $log);
@@ -256,7 +260,7 @@ class LogController extends Controller {
     public function getLogOutstanding() {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         try {
-            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->where("logs.next_approver",Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at', 'logs.due_date')->oldest()->get();
+            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->where("logs.next_approver",Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at', 'logs.due_date')->orderBy('logs.created_at')->get();
             foreach ($data as $key => $value) {
                 $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
             }
@@ -272,7 +276,7 @@ class LogController extends Controller {
     public function getLogPersonal() {
         if (!Auth::user()) return response(json_encode(["Message" => "You're not logged in"]), 401);
         try {
-            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->Where("logs.user_id", Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at', 'logs.due_date')->latest()->get();
+            $data = DB::table("logs")->join('users', "logs.user_id", "=", "users.id", 'inner')->Where("logs.user_id", Auth::user()->id)->select('logs.id', 'logs.uuid', 'users.name', 'users.profile_path', 'logs.title', 'logs.log', 'logs.status', 'logs.updated_at', 'logs.due_date')->orderBy('logs.created_at', 'desc')->get();
             foreach ($data as $key => $value) {
                 $value->shortenlog = Str::words(strip_tags($value->log), 10, '...');
             }
@@ -280,6 +284,20 @@ class LogController extends Controller {
                 return response(json_encode(["Message" => "Log is Empty"]), 204);
             }
             return response(json_encode(["Data" => $data]));
+        } catch (\Throwable $th) {
+            return response(json_encode($th->getMessage()), 500);
+        }
+    }
+
+    public function delete($id) {
+        try {
+            $log = Log::where("uuid", $id)->first();
+            if ($log->canDelete()) {
+                $log->softDelete();
+                return redirect('/log');
+            }else{
+                return response("This Log can't be deleted", 422);
+            }
         } catch (\Throwable $th) {
             return response(json_encode($th->getMessage()), 500);
         }

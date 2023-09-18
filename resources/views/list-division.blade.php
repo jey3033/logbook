@@ -7,6 +7,11 @@
     <title>Division Management - List</title>
 
     @include('include/head')
+    <style>
+        .col-action{
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body id="parent">
     @include('include/topbar')
@@ -23,12 +28,12 @@
           <div class="accordion-body">
             <form id="division-filter-form">
                 <div class="row justify-content-center align-items-center g-2">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                       <label for="filter-name" class="form-label">Nama</label>
                       <input type="text"
                         class="form-control" name="divisions.name" id="filter-name" placeholder="Nama">
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="filter-supervisor" class="form-label">Supervisor</label>
                         <select class="form-select" name="users.uuid" id="filter-supervisor">
                             <option value=""></option>
@@ -36,15 +41,21 @@
                                 <option value="{!! $supervisor->uuid !!}">{!! $supervisor->name !!}</option>
                             @endforeach
                         </select>
-                      </div>
-                      <div class="col-md-4 mb-3">
+                    </div>                      
+                </div>
+                <div class="row justify-content-center align-items-center g-2">
+                    <div class="col-md-6 mb-3">
+                        <label for="filter-due-date" class="form-label">Batas Persetujuan</label>
+                        <input type="number" class="form-control" name="divisions.due_date_acceptance" id="filter-due-date" placeholder="Batas Persetujuan(Hari)">
+                    </div>
+                    <div class="col-md-6 mb-3">
                         <label for="filter-status" class="form-label">Status</label>
                         <select class="form-select" name="divisions.activated" id="filter-status">
                             <option value=""></option>
                             <option value="1">Active</option>
                             <option value="2">Non-Active</option>
                         </select>
-                      </div>
+                    </div>
                 </div>
                 <div class="row justify-content-center align-items-center g-2">
                     <button type="button" id="filter-submit" class="btn btn-primary">Submit</button>
@@ -61,11 +72,11 @@
         </button>
 
         <div class="row justify-content-center align-items-center g-2">
-            <div class="col-md-1 fw-bold text-center">Action</div>
-            <div class="col-md-3 fw-bold">Name</div>
-            <div class="col-md-3 fw-bold">Supervisor</div>
-            <div class="col-md-2 fw-bold">Batas Persetujuan</div>
-            <div class="col-md-3 fw-bold">Status</div>
+            <div class="col-md-1 fw-bold text-center col-head col-action">Action</div>
+            <div class="col-md-3 fw-bold col-head col-name">Name</div>
+            <div class="col-md-3 fw-bold col-head col-supervisor">Supervisor</div>
+            <div class="col-md-1 fw-bold col-head col-due-date">Batas Persetujuan</div>
+            <div class="col-md-3 fw-bold col-head col-status">Status</div>
         </div>
         <div id="division-list-body"></div>
     </div>
@@ -96,7 +107,7 @@
 
             $('#filter-submit').click(function (e) { 
                 e.preventDefault();
-                param = $('#user-filter-form').serializeArray();
+                param = $('#division-filter-form').serializeArray();
 
                 console.log(param);
                 $('#division-list-body').empty();
@@ -131,7 +142,7 @@
                                 }else if(value['active'] == 2){
                                     chgsttsbtn = `<a class="dropdown-item" id="btn-act-${value['uuid']}" href="/division/${value['uuid']}/activate"><i class="fa-solid fa-user-check"></i> Activate</a>`;
                                 }
-                                let button = `<div class="col-md-1 dropdown open">
+                                let button = `<div class="col-md-1 dropdown open col-data col-action">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="trigger-dropdown-${value['uuid']}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Action
                                                     </a>
@@ -148,10 +159,10 @@
                                 }
                                 let data = `<div class="row justify-content-center align-items-center g-2 my-3">
                                         ${button}
-                                        <div class="col-md-3">${value['name']}</div>
-                                        <div class="col-md-3">${value['supervisor']}</div>
-                                        <div class="col-md-2">${value['due_date_acceptance']}</div>
-                                        <div class="col-md-3 pl-20">${status}</div>
+                                        <div class="col-md-3 col-data col-name">${value['name']}</div>
+                                        <div class="col-md-3 col-data col-supervisor">${value['supervisor']}</div>
+                                        <div class="col-md-1 col-data col-due-date">${value['due_date_acceptance']}</div>
+                                        <div class="col-md-3 pl-20 col-data col-status">${status}</div>
                                     </div>`;
                                 
                                 $('#division-list-body').append(data);

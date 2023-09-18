@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('activated'); // 1=activated, 2=deactivated
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger("supervisor")->nullable();
+            $table->unsignedBigInteger("is_admin")->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

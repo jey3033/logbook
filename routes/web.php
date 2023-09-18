@@ -77,6 +77,7 @@ Route::controller(LogController::class)->group(function () {
     Route::post('/log/store', 'store');
     Route::get('/log/{id}', 'view')->name("viewlog");
     Route::post('/log/response/{id}', 'response');
+    Route::get('/log/delete/{id}', 'delete');
     Route::post('/log/update/{id}', 'amend');
 
     Route::get("/get-outstanding-log", "getLogOutstanding");

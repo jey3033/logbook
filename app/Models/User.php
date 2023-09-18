@@ -29,6 +29,7 @@ class User extends Authenticatable
         'secret',
         'TOTPEnable',
         'device_key',
+        'is_admin'
     ];
 
     /**
@@ -52,5 +53,15 @@ class User extends Authenticatable
 
     public function division(): BelongsTo {
         return $this->belongsTo(Division::class, 'id', 'division');
+    }
+
+    public function isSupervisor() {
+        if (Division::where("supervisor", $this->id)->count()) return true;
+        return false;
+    }
+
+    public function isAdmin() {
+        if ($this->is_admin) return true;
+        return false;
     }
 }

@@ -82,7 +82,7 @@ class UserController extends BaseController
     }
 
     public function get_list_user() {
-        $user = DB::table("users")->select('users.name', 'users.profile_path', 'users.email', 'users.activated', 'users.uuid', 'users.supervisor');
+        $user = DB::table("users")->select('users.name', 'users.profile_path', 'users.email', 'users.activated', 'users.uuid');
         if (isset($_REQUEST['filter'])) {
             foreach ($_REQUEST['filter'] as $key => $value) {
                 if($value['value'] != null) {

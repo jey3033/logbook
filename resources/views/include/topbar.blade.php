@@ -50,7 +50,7 @@
         <li class="nav-item d-none d-sm-inline-block">
           <a href="/log" class="nav-link"><i class="fa-solid fa-file-lines"></i> Log</a>
         </li>
-        @if (Auth::user()->supervisor == 0)
+        @if (Auth::user()->isSupervisor() || Auth::user()->isAdmin())
             <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="/user"><i class="fa-solid fa-user-gear"></i> User Management</a>
             </li>

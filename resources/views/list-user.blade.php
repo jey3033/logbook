@@ -7,6 +7,11 @@
     <title>User Management - List</title>
 
     @include('include/head')
+    <style>
+        .col-action{
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body id="parent">
     @include('include/topbar')
@@ -88,10 +93,10 @@
         </div>
 
         <div class="row justify-content-center align-items-center g-2">
-            <div class="col-md-1 fw-bold text-center">Action</div>
-            <div class="col-md-3 fw-bold">User</div>
-            <div class="col-md-3 fw-bold">Email</div>
-            <div class="col-md-3 fw-bold">Status</div>
+            <div class="col-md-1 fw-bold text-center col-head col-action">Action</div>
+            <div class="col-md-3 fw-bold col-head col-user">User</div>
+            <div class="col-md-3 fw-bold col-head col-email">Email</div>
+            <div class="col-md-3 fw-bold col-head col-status">Status</div>
         </div>
         <div id="user-list-body"></div>
     </div>
@@ -147,7 +152,7 @@
                                 }else if(value['activated'] == 2){
                                     chgsttsbtn = `<a class="dropdown-item" id="btn-act-${value['uuid']}" href="/user/${value['uuid']}/actuser"><i class="fa-solid fa-user-check"></i> Activate</a`;
                                 }
-                                let button = `<div class="col-md-1 dropdown open">
+                                let button = `<div class="col-md-1 dropdown open col-data col-action">
                                                     <a class="btn btn-primary dropdown-toggle" type="button" id="trigger-dropdown-${value['uuid']}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Action
                                                     </a>
@@ -165,9 +170,9 @@
                                 }
                                 let data = `<div class="row justify-content-center align-items-center g-2 my-3">
                                         ${button}
-                                        <div class="col-md-3">${value['name']}</div>
-                                        <div class="col-md-3">${value['email']}</div>
-                                        <div class="col-md-3 pl-20">${status}</div>
+                                        <div class="col-md-3 col-data col-user">${value['name']}</div>
+                                        <div class="col-md-3 col-data col-email">${value['email']}</div>
+                                        <div class="col-md-3 col-data col-status pl-20">${status}</div>
                                     </div>`;
                                 
                                 $('#user-list-body').append(data);
